@@ -1,0 +1,32 @@
+{
+  "safe_commands": [
+    "ls", "cat", "pwd", "df", "du", "ps", "uname", "whoami", "date", "head", "tail",
+    "lsblk", "free", "uptime", "aplay", "arecord", "pactl", "lspci", "lsusb", "dmesg",
+    "journalctl", "lsmod", "id", "hostname", "stat", "file", "which", "grep", "find", "less",
+    "more", "wc", "sort", "uniq", "cut", "tr", "printf", "echo", "env", "printenv", "who", "w", "last", "ip", "ss",
+    "ping", "getent", "lscpu", "lsmem", "mountpoint", "true", "false"
+  ],
+  "moderate_commands": ["mkdir", "touch", "cp", "mv", "ln", "tee", "git"],
+  "sensitive_commands": [
+    "sudo", "su", "doas", "apt", "apt-get", "dpkg", "dnf", "yum", "rpm", "brew", "winget",
+    "choco", "systemctl", "service", "mount", "umount", "modprobe", "insmod", "rmmod", "iptables",
+    "nft", "ufw", "firewall-cmd", "useradd", "usermod", "userdel", "passwd", "chown", "chmod",
+    "kill", "killall", "pkill", "reboot", "shutdown", "poweroff", "grub-install", "update-grub",
+    "mkinitcpio", "pacman", "zypper", "snap", "flatpak", "curl", "wget", "ssh", "scp", "sftp",
+    "nc", "netcat", "powershell", "pwsh", "cmd", "reg", "diskpart", "bcdedit", "sc.exe", "format",
+    "takeown", "icacls", "net", "netsh", "Invoke-WebRequest", "Invoke-RestMethod", "Set-ExecutionPolicy"
+  ],
+  "blocked_patterns": [
+    "(?i)\\brm\\b[^;&|]*\\s--no-preserve-root\\b",
+    "(?i)\\brm\\b(?=[^;&|]*\\s-(?:[a-zA-Z]*rf[a-zA-Z]*|[a-zA-Z]*fr[a-zA-Z]*)\\s)[^;&|]*\\s/(?:\\s|$|[;&|])",
+    "(?i)(?:^|[;&|]\\s*)rm\\s+(?:-[a-zA-Z]*\\s+)*-[a-zA-Z]*r[a-zA-Z]*f[a-zA-Z]*\\s+/(?:\\s|$)",
+    "(?i)(?:^|[;&|]\\s*)rm\\s+(?:-[a-zA-Z]*\\s+)*-[a-zA-Z]*f[a-zA-Z]*r[a-zA-Z]*\\s+/(?:\\s|$)",
+    "(?i)\\bdd\\b.*\\bof=/dev/(?:sd[a-z]|nvme\\d+n\\d+|hd[a-z]|vd[a-z]|mmcblk\\d+)",
+    "(?i)\\bmkfs(?:\\.\\w+)?\\b.*(?:/dev/|\\s)",
+    ":\\s*\\(\\s*\\)\\s*\\{.*\\}\\s*;\\s*:",
+    "(?i)\\b(shutdown|poweroff|reboot)\\b.*--force.*(?:now|0)?$"
+  ],
+  "sensitive_paths": ["/etc/", "/boot/", "/usr/", "/bin/", "/sbin/", "/root/", "C:\\\\Windows\\\\", "C:\\\\Program Files\\\\"],
+  "network_commands": ["curl", "wget", "ssh", "scp", "sftp", "nc", "netcat", "Invoke-WebRequest", "Invoke-RestMethod"]
+}
+

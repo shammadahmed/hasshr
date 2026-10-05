@@ -15,6 +15,7 @@ import time
 import uuid
 from dataclasses import dataclass, field
 from enum import Enum, IntEnum
+from pathlib import Path
 from typing import Any, Protocol
 
 
@@ -34,10 +35,15 @@ class RiskLevel(IntEnum):
     BLOCKED = 3  # refused in every mode
 
 
+Level = RiskLevel
+
+
 class Mode(str, Enum):
     ASK_ALL = "ask-all"
     ASK_SENSITIVE = "ask-sensitive"  # default
     AUTO = "auto"
+    PARANOID = "paranoid"
+    PLAN_ONLY = "plan-only"
 
 
 class Reversibility(str, Enum):
@@ -50,6 +56,8 @@ class Action(str, Enum):
     ALLOW = "allow"
     ASK = "ask"
     REFUSE = "refuse"
+    EXECUTE = "execute"
+    PLAN = "plan"
 
 
 class ApprovalChoice(str, Enum):
@@ -87,11 +95,41 @@ class CasePhase(str, Enum):
 
 @dataclass
 class EnvInfo:
+    os: str = "unknown"
     os_name: str = "unknown"  # linux / darwin / windows
+    os_version: str = ""
     distro: str = "unknown"
+    distro_version: str = "unknown"
+    kernel: str = "unknown"
     shell: str = "unknown"
-    package_manager: str = "unknown"
+    package_manager: str | None = None
+    is_root: bool = False
     home: str = "~"
+    extras: dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if self.os and (not self.os_name or self.os_name == "unknown"):
+            self.os_name = self.os
+        elif self.os_name and (not self.os or self.os == "unknown"):
+            self.os = self.os_name
+
+    def summary(self) -> str:
+        parts = [f"OS: {self.os_name or self.os}"]
+        if self.distro and self.distro != "unknown":
+            parts.append(f"distro: {self.distro} {self.distro_version}".strip())
+        if self.kernel and self.kernel != "unknown":
+            parts.append(f"kernel: {self.kernel}")
+        parts.append(f"shell: {self.shell or 'unknown'}")
+        parts.append(f"package manager: {self.package_manager or 'none detected'}")
+        return "; ".join(parts)
+
+    @classmethod
+    def detect(cls) -> EnvInfo:
+        try:
+            from termiai.platform.detect import detect_environment
+            return detect_environment()
+        except Exception:
+            return cls()
 
 
 @dataclass
@@ -99,11 +137,43 @@ class Context:
     """Passed through the whole pipeline."""
 
     mode: Mode = Mode.ASK_SENSITIVE
-    env: EnvInfo = field(default_factory=EnvInfo)
+    env: EnvInfo = field(default_factory=EnvInfo.detect)
     case_id: str | None = None
     always_allow: set[str] = field(default_factory=set)  # "[a]lways this session"
     untrusted_seen: bool = False  # set once web/file content entered the LLM context
     allow_dangerous: bool = False  # reserved; hard blocks stay on in v0.1
+    adapter: Any = None
+    journal: Any = None
+    cwd: Path = field(default_factory=Path.cwd)
+    step: str = ""
+    step_num: int = 0
+    interactive: bool = True
+    session_id: str = field(default_factory=lambda: uuid.uuid4().hex[:8])
+    dry_run: bool = False
+    extras: dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if self.adapter is None:
+            try:
+                from termiai.platform import get_adapter
+                self.adapter = get_adapter(self.env)
+            except Exception:
+                self.adapter = None
+        if self.journal is None:
+            try:
+                from termiai.tools.base import StubJournal
+                self.journal = StubJournal()
+            except Exception:
+                self.journal = None
+
+    def resolve(self, path: str | Path) -> Path:
+        p = Path(path).expanduser()
+        if not p.is_absolute():
+            p = self.cwd / p
+        return p
+
+
+ToolContext = Context
 
 
 # ------------------------------------------------------------------------- tools
@@ -126,6 +196,9 @@ class ToolResult:
     error: str | None = None
     declined: bool = False  # user said no
     refused: bool = False  # blocked by the safety engine
+    data: dict[str, Any] = field(default_factory=dict)
+    reversibility: Reversibility = Reversibility.FULL
+    undo_hint: str = ""
 
 
 # ------------------------------------------------------------------------ safety
@@ -179,11 +252,14 @@ class JournalEntry:
     risk: int = 0
     reversibility: str = Reversibility.FULL.value
     timestamp: float = field(default_factory=time.time)
-    backups: dict[str, str] = field(default_factory=dict)  # original path -> backup path
+    time: str = ""
+    step: str = ""
+    backups: Any = field(default_factory=list)  # original path -> backup path or list
     hashes: dict[str, str] = field(default_factory=dict)  # path -> sha256 before/after
     diff: str = ""
     ok: bool | None = None
     output: str = ""
+    undo: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -221,9 +297,16 @@ class CaseState:
     success_test: str | None = None
     phase: CasePhase = CasePhase.DEFINE_TEST
     hypotheses: list[Hypothesis] = field(default_factory=list)
+    active_hypothesis: Hypothesis | None = None
+    winning_hypothesis: Hypothesis | None = None
     attempts: int = 0
     findings: list[Finding] = field(default_factory=list)
     outcome: Outcome | None = None
+    reboot_pending: bool = False
+    report_path: str | None = None
+    history: list[dict[str, Any]] = field(default_factory=list)
+    created_at: float = field(default_factory=time.time)
+    updated_at: float = field(default_factory=time.time)
 
 
 # -------------------------------------------------------------------- agent loop

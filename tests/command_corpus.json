@@ -1,0 +1,1607 @@
+{
+  "version": 1,
+  "description": "Member 2 command classification evaluation corpus; do not execute these commands.",
+  "count": 320,
+  "cases": [
+    {
+      "command": "pwd",
+      "expected": "SAFE",
+      "reason": "print working directory"
+    },
+    {
+      "command": "ls",
+      "expected": "SAFE",
+      "reason": "list current directory"
+    },
+    {
+      "command": "ls -la",
+      "expected": "SAFE",
+      "reason": "list directory details"
+    },
+    {
+      "command": "cat notes.txt",
+      "expected": "SAFE",
+      "reason": "read a file"
+    },
+    {
+      "command": "head -n 10 notes.txt",
+      "expected": "SAFE",
+      "reason": "read file beginning"
+    },
+    {
+      "command": "tail -n 20 app.log",
+      "expected": "SAFE",
+      "reason": "read file end"
+    },
+    {
+      "command": "wc -l notes.txt",
+      "expected": "SAFE",
+      "reason": "count lines"
+    },
+    {
+      "command": "grep hello notes.txt",
+      "expected": "SAFE",
+      "reason": "search text"
+    },
+    {
+      "command": "grep -n error app.log",
+      "expected": "SAFE",
+      "reason": "search text with line numbers"
+    },
+    {
+      "command": "find . -name \"*.py\"",
+      "expected": "SAFE",
+      "reason": "find files"
+    },
+    {
+      "command": "stat report.txt",
+      "expected": "SAFE",
+      "reason": "inspect file metadata"
+    },
+    {
+      "command": "file archive.zip",
+      "expected": "SAFE",
+      "reason": "identify file type"
+    },
+    {
+      "command": "which python",
+      "expected": "SAFE",
+      "reason": "locate executable"
+    },
+    {
+      "command": "whoami",
+      "expected": "SAFE",
+      "reason": "show current user"
+    },
+    {
+      "command": "id",
+      "expected": "SAFE",
+      "reason": "show user identity"
+    },
+    {
+      "command": "hostname",
+      "expected": "SAFE",
+      "reason": "show hostname"
+    },
+    {
+      "command": "uname -a",
+      "expected": "SAFE",
+      "reason": "show kernel information"
+    },
+    {
+      "command": "date",
+      "expected": "SAFE",
+      "reason": "show date"
+    },
+    {
+      "command": "uptime",
+      "expected": "SAFE",
+      "reason": "show uptime"
+    },
+    {
+      "command": "free -h",
+      "expected": "SAFE",
+      "reason": "show memory use"
+    },
+    {
+      "command": "df -h",
+      "expected": "SAFE",
+      "reason": "show filesystem space"
+    },
+    {
+      "command": "du -sh .",
+      "expected": "SAFE",
+      "reason": "show directory size"
+    },
+    {
+      "command": "ps aux",
+      "expected": "SAFE",
+      "reason": "list processes"
+    },
+    {
+      "command": "lsblk",
+      "expected": "SAFE",
+      "reason": "list block devices"
+    },
+    {
+      "command": "lscpu",
+      "expected": "SAFE",
+      "reason": "show CPU details"
+    },
+    {
+      "command": "lsmem",
+      "expected": "SAFE",
+      "reason": "show memory blocks"
+    },
+    {
+      "command": "lspci",
+      "expected": "SAFE",
+      "reason": "list PCI devices"
+    },
+    {
+      "command": "lsusb",
+      "expected": "SAFE",
+      "reason": "list USB devices"
+    },
+    {
+      "command": "ip addr show",
+      "expected": "SAFE",
+      "reason": "inspect network interfaces"
+    },
+    {
+      "command": "ip route show",
+      "expected": "SAFE",
+      "reason": "inspect routes"
+    },
+    {
+      "command": "ss -tuln",
+      "expected": "SAFE",
+      "reason": "list listening sockets"
+    },
+    {
+      "command": "getent hosts example.com",
+      "expected": "SAFE",
+      "reason": "resolve host record"
+    },
+    {
+      "command": "ping -c 1 127.0.0.1",
+      "expected": "SAFE",
+      "reason": "network diagnostic"
+    },
+    {
+      "command": "journalctl -n 20",
+      "expected": "SAFE",
+      "reason": "read recent system journal"
+    },
+    {
+      "command": "dmesg",
+      "expected": "SAFE",
+      "reason": "read kernel messages"
+    },
+    {
+      "command": "lsmod",
+      "expected": "SAFE",
+      "reason": "list loaded modules"
+    },
+    {
+      "command": "mountpoint /",
+      "expected": "SAFE",
+      "reason": "check mountpoint"
+    },
+    {
+      "command": "printenv PATH",
+      "expected": "SAFE",
+      "reason": "read environment variable"
+    },
+    {
+      "command": "env",
+      "expected": "SAFE",
+      "reason": "show environment"
+    },
+    {
+      "command": "echo hello",
+      "expected": "SAFE",
+      "reason": "print text"
+    },
+    {
+      "command": "printf \"hello\\n\"",
+      "expected": "SAFE",
+      "reason": "print text"
+    },
+    {
+      "command": "sort names.txt",
+      "expected": "SAFE",
+      "reason": "sort text output"
+    },
+    {
+      "command": "uniq names.txt",
+      "expected": "SAFE",
+      "reason": "remove adjacent duplicates in output"
+    },
+    {
+      "command": "cut -d, -f1 data.csv",
+      "expected": "SAFE",
+      "reason": "select columns"
+    },
+    {
+      "command": "tr a-z A-Z",
+      "expected": "SAFE",
+      "reason": "transform standard input"
+    },
+    {
+      "command": "less README.md",
+      "expected": "SAFE",
+      "reason": "read text interactively"
+    },
+    {
+      "command": "more README.md",
+      "expected": "SAFE",
+      "reason": "read text interactively"
+    },
+    {
+      "command": "true",
+      "expected": "SAFE",
+      "reason": "return success"
+    },
+    {
+      "command": "false",
+      "expected": "SAFE",
+      "reason": "return failure status"
+    },
+    {
+      "command": "cat notes.txt | grep hello",
+      "expected": "SAFE",
+      "reason": "read-only pipeline"
+    },
+    {
+      "command": "ls | grep py",
+      "expected": "SAFE",
+      "reason": "read-only pipeline"
+    },
+    {
+      "command": "ps aux | grep python",
+      "expected": "SAFE",
+      "reason": "inspect process list"
+    },
+    {
+      "command": "df -h | grep dev",
+      "expected": "SAFE",
+      "reason": "inspect disk report"
+    },
+    {
+      "command": "uname -r",
+      "expected": "SAFE",
+      "reason": "show kernel release"
+    },
+    {
+      "command": "hostname -I",
+      "expected": "SAFE",
+      "reason": "show local addresses"
+    },
+    {
+      "command": "ip link show",
+      "expected": "SAFE",
+      "reason": "inspect network links"
+    },
+    {
+      "command": "ss -s",
+      "expected": "SAFE",
+      "reason": "show socket summary"
+    },
+    {
+      "command": "who",
+      "expected": "SAFE",
+      "reason": "show logged-in users"
+    },
+    {
+      "command": "w",
+      "expected": "SAFE",
+      "reason": "show logged-in users"
+    },
+    {
+      "command": "last -n 5",
+      "expected": "SAFE",
+      "reason": "inspect login history"
+    },
+    {
+      "command": "ls -l /tmp",
+      "expected": "SAFE",
+      "reason": "list temporary directory"
+    },
+    {
+      "command": "head -n 5 /etc/hosts",
+      "expected": "SAFE",
+      "reason": "read hosts file"
+    },
+    {
+      "command": "grep nameserver /etc/resolv.conf",
+      "expected": "SAFE",
+      "reason": "read resolver settings"
+    },
+    {
+      "command": "git status",
+      "expected": "SAFE",
+      "reason": "inspect working tree"
+    },
+    {
+      "command": "git log -5 --oneline",
+      "expected": "SAFE",
+      "reason": "inspect commit history"
+    },
+    {
+      "command": "git diff",
+      "expected": "SAFE",
+      "reason": "inspect changes"
+    },
+    {
+      "command": "python --version",
+      "expected": "SAFE",
+      "reason": "show Python version"
+    },
+    {
+      "command": "pytest --version",
+      "expected": "SAFE",
+      "reason": "show pytest version"
+    },
+    {
+      "command": "ruff --version",
+      "expected": "SAFE",
+      "reason": "show Ruff version"
+    },
+    {
+      "command": "ls -1",
+      "expected": "SAFE",
+      "reason": "list filenames"
+    },
+    {
+      "command": "wc -w README.md",
+      "expected": "SAFE",
+      "reason": "count words"
+    },
+    {
+      "command": "mkdir new_folder",
+      "expected": "MODERATE",
+      "reason": "create directory"
+    },
+    {
+      "command": "mkdir -p reports/2026",
+      "expected": "MODERATE",
+      "reason": "create directory tree"
+    },
+    {
+      "command": "touch draft.txt",
+      "expected": "MODERATE",
+      "reason": "create empty file"
+    },
+    {
+      "command": "cp notes.txt notes.bak",
+      "expected": "MODERATE",
+      "reason": "copy file"
+    },
+    {
+      "command": "cp -r docs docs_backup",
+      "expected": "MODERATE",
+      "reason": "copy directory"
+    },
+    {
+      "command": "mv draft.txt draft_old.txt",
+      "expected": "MODERATE",
+      "reason": "rename file"
+    },
+    {
+      "command": "ln -s target shortcut",
+      "expected": "MODERATE",
+      "reason": "create symlink"
+    },
+    {
+      "command": "git add README.md",
+      "expected": "MODERATE",
+      "reason": "stage a local file"
+    },
+    {
+      "command": "git commit -m \"update docs\"",
+      "expected": "MODERATE",
+      "reason": "create local commit"
+    },
+    {
+      "command": "git branch feature/safety",
+      "expected": "MODERATE",
+      "reason": "create local branch"
+    },
+    {
+      "command": "git switch feature/safety",
+      "expected": "MODERATE",
+      "reason": "switch local branch"
+    },
+    {
+      "command": "git restore --staged README.md",
+      "expected": "MODERATE",
+      "reason": "unstage a file"
+    },
+    {
+      "command": "git stash push",
+      "expected": "MODERATE",
+      "reason": "stash working changes"
+    },
+    {
+      "command": "git tag v0.1",
+      "expected": "MODERATE",
+      "reason": "create local tag"
+    },
+    {
+      "command": "tee output.txt",
+      "expected": "MODERATE",
+      "reason": "write command output to a file"
+    },
+    {
+      "command": "mkdir screenshots",
+      "expected": "MODERATE",
+      "reason": "create directory"
+    },
+    {
+      "command": "touch TODO.md",
+      "expected": "MODERATE",
+      "reason": "create file"
+    },
+    {
+      "command": "cp config.example config.local",
+      "expected": "MODERATE",
+      "reason": "copy configuration template"
+    },
+    {
+      "command": "mv report.tmp report.txt",
+      "expected": "MODERATE",
+      "reason": "rename local file"
+    },
+    {
+      "command": "ln -s ../shared shared",
+      "expected": "MODERATE",
+      "reason": "create relative symlink"
+    },
+    {
+      "command": "git add tests/test_classifier.py",
+      "expected": "MODERATE",
+      "reason": "stage test file"
+    },
+    {
+      "command": "git commit -m \"add safety tests\"",
+      "expected": "MODERATE",
+      "reason": "create local commit"
+    },
+    {
+      "command": "git branch experiment",
+      "expected": "MODERATE",
+      "reason": "create branch"
+    },
+    {
+      "command": "git stash list",
+      "expected": "MODERATE",
+      "reason": "inspect stash list"
+    },
+    {
+      "command": "git restore draft.txt",
+      "expected": "MODERATE",
+      "reason": "restore a tracked file"
+    },
+    {
+      "command": "mkdir -p build/output",
+      "expected": "MODERATE",
+      "reason": "create build directory"
+    },
+    {
+      "command": "touch .keep",
+      "expected": "MODERATE",
+      "reason": "create placeholder"
+    },
+    {
+      "command": "cp a.txt b.txt",
+      "expected": "MODERATE",
+      "reason": "copy a file"
+    },
+    {
+      "command": "mv a.txt archive/a.txt",
+      "expected": "MODERATE",
+      "reason": "move local file"
+    },
+    {
+      "command": "ln -s /tmp/data data-link",
+      "expected": "MODERATE",
+      "reason": "create symlink"
+    },
+    {
+      "command": "git switch main",
+      "expected": "MODERATE",
+      "reason": "switch branch"
+    },
+    {
+      "command": "git tag test-run",
+      "expected": "MODERATE",
+      "reason": "create local tag"
+    },
+    {
+      "command": "tee report.log",
+      "expected": "MODERATE",
+      "reason": "write output to file"
+    },
+    {
+      "command": "mkdir temp-work",
+      "expected": "MODERATE",
+      "reason": "create working directory"
+    },
+    {
+      "command": "touch notes-new.txt",
+      "expected": "MODERATE",
+      "reason": "create file"
+    },
+    {
+      "command": "sudo whoami",
+      "expected": "SENSITIVE",
+      "reason": "privilege escalation"
+    },
+    {
+      "command": "sudo apt install git",
+      "expected": "SENSITIVE",
+      "reason": "install package"
+    },
+    {
+      "command": "sudo apt remove nginx",
+      "expected": "SENSITIVE",
+      "reason": "remove package"
+    },
+    {
+      "command": "apt update",
+      "expected": "SENSITIVE",
+      "reason": "update package metadata"
+    },
+    {
+      "command": "apt upgrade",
+      "expected": "SENSITIVE",
+      "reason": "upgrade packages"
+    },
+    {
+      "command": "apt-get install curl",
+      "expected": "SENSITIVE",
+      "reason": "install package"
+    },
+    {
+      "command": "dpkg -i package.deb",
+      "expected": "SENSITIVE",
+      "reason": "install package file"
+    },
+    {
+      "command": "dnf install git",
+      "expected": "SENSITIVE",
+      "reason": "install package"
+    },
+    {
+      "command": "yum update",
+      "expected": "SENSITIVE",
+      "reason": "update packages"
+    },
+    {
+      "command": "rpm -Uvh package.rpm",
+      "expected": "SENSITIVE",
+      "reason": "install or upgrade package"
+    },
+    {
+      "command": "brew install wget",
+      "expected": "SENSITIVE",
+      "reason": "install package"
+    },
+    {
+      "command": "winget install Git.Git",
+      "expected": "SENSITIVE",
+      "reason": "install Windows package"
+    },
+    {
+      "command": "choco install git",
+      "expected": "SENSITIVE",
+      "reason": "install package"
+    },
+    {
+      "command": "systemctl restart ssh",
+      "expected": "SENSITIVE",
+      "reason": "restart service"
+    },
+    {
+      "command": "systemctl enable nginx",
+      "expected": "SENSITIVE",
+      "reason": "enable service"
+    },
+    {
+      "command": "service cron restart",
+      "expected": "SENSITIVE",
+      "reason": "restart service"
+    },
+    {
+      "command": "mount /dev/sdb1 /mnt",
+      "expected": "SENSITIVE",
+      "reason": "mount filesystem"
+    },
+    {
+      "command": "umount /mnt",
+      "expected": "SENSITIVE",
+      "reason": "unmount filesystem"
+    },
+    {
+      "command": "modprobe example_module",
+      "expected": "SENSITIVE",
+      "reason": "load kernel module"
+    },
+    {
+      "command": "insmod module.ko",
+      "expected": "SENSITIVE",
+      "reason": "load kernel module"
+    },
+    {
+      "command": "rmmod example_module",
+      "expected": "SENSITIVE",
+      "reason": "remove kernel module"
+    },
+    {
+      "command": "iptables -L",
+      "expected": "SENSITIVE",
+      "reason": "inspect firewall rules"
+    },
+    {
+      "command": "iptables -F",
+      "expected": "SENSITIVE",
+      "reason": "change firewall rules"
+    },
+    {
+      "command": "nft list ruleset",
+      "expected": "SENSITIVE",
+      "reason": "inspect firewall rules"
+    },
+    {
+      "command": "ufw enable",
+      "expected": "SENSITIVE",
+      "reason": "change firewall"
+    },
+    {
+      "command": "firewall-cmd --reload",
+      "expected": "SENSITIVE",
+      "reason": "reload firewall"
+    },
+    {
+      "command": "useradd demo",
+      "expected": "SENSITIVE",
+      "reason": "create system user"
+    },
+    {
+      "command": "usermod -aG wheel demo",
+      "expected": "SENSITIVE",
+      "reason": "change user membership"
+    },
+    {
+      "command": "userdel demo",
+      "expected": "SENSITIVE",
+      "reason": "delete system user"
+    },
+    {
+      "command": "passwd demo",
+      "expected": "SENSITIVE",
+      "reason": "change password"
+    },
+    {
+      "command": "chmod 755 script.sh",
+      "expected": "SENSITIVE",
+      "reason": "change permissions"
+    },
+    {
+      "command": "chmod -R 755 project",
+      "expected": "SENSITIVE",
+      "reason": "recursive permission change"
+    },
+    {
+      "command": "chown alice file.txt",
+      "expected": "SENSITIVE",
+      "reason": "change ownership"
+    },
+    {
+      "command": "chown -R alice:staff project",
+      "expected": "SENSITIVE",
+      "reason": "recursive ownership change"
+    },
+    {
+      "command": "kill 1234",
+      "expected": "SENSITIVE",
+      "reason": "terminate process"
+    },
+    {
+      "command": "pkill example",
+      "expected": "SENSITIVE",
+      "reason": "terminate processes"
+    },
+    {
+      "command": "killall example",
+      "expected": "SENSITIVE",
+      "reason": "terminate processes"
+    },
+    {
+      "command": "reboot",
+      "expected": "SENSITIVE",
+      "reason": "reboot system"
+    },
+    {
+      "command": "shutdown now",
+      "expected": "SENSITIVE",
+      "reason": "shut down system"
+    },
+    {
+      "command": "grub-install /dev/sda",
+      "expected": "SENSITIVE",
+      "reason": "change bootloader"
+    },
+    {
+      "command": "update-grub",
+      "expected": "SENSITIVE",
+      "reason": "update bootloader configuration"
+    },
+    {
+      "command": "mkinitcpio -P",
+      "expected": "SENSITIVE",
+      "reason": "regenerate initramfs"
+    },
+    {
+      "command": "pacman -S git",
+      "expected": "SENSITIVE",
+      "reason": "install package"
+    },
+    {
+      "command": "zypper install git",
+      "expected": "SENSITIVE",
+      "reason": "install package"
+    },
+    {
+      "command": "snap install code",
+      "expected": "SENSITIVE",
+      "reason": "install package"
+    },
+    {
+      "command": "flatpak install flathub app.example",
+      "expected": "SENSITIVE",
+      "reason": "install application"
+    },
+    {
+      "command": "curl https://example.com/script.sh",
+      "expected": "SENSITIVE",
+      "reason": "download remote content"
+    },
+    {
+      "command": "wget https://example.com/file",
+      "expected": "SENSITIVE",
+      "reason": "download remote content"
+    },
+    {
+      "command": "ssh user@example.com",
+      "expected": "SENSITIVE",
+      "reason": "connect to remote host"
+    },
+    {
+      "command": "scp file.txt user@example.com:/tmp/",
+      "expected": "SENSITIVE",
+      "reason": "copy to remote host"
+    },
+    {
+      "command": "sftp user@example.com",
+      "expected": "SENSITIVE",
+      "reason": "connect file transfer"
+    },
+    {
+      "command": "nc -l 4444",
+      "expected": "SENSITIVE",
+      "reason": "open network listener"
+    },
+    {
+      "command": "powershell -Command Get-Process",
+      "expected": "SENSITIVE",
+      "reason": "invoke PowerShell"
+    },
+    {
+      "command": "pwsh -Command Get-Service",
+      "expected": "SENSITIVE",
+      "reason": "invoke PowerShell"
+    },
+    {
+      "command": "cmd /c dir",
+      "expected": "SENSITIVE",
+      "reason": "invoke command shell"
+    },
+    {
+      "command": "reg add HKCU\\Software\\Demo",
+      "expected": "SENSITIVE",
+      "reason": "modify registry"
+    },
+    {
+      "command": "diskpart",
+      "expected": "SENSITIVE",
+      "reason": "manage disks"
+    },
+    {
+      "command": "bcdedit /enum",
+      "expected": "SENSITIVE",
+      "reason": "inspect boot configuration"
+    },
+    {
+      "command": "sc.exe stop example",
+      "expected": "SENSITIVE",
+      "reason": "change service state"
+    },
+    {
+      "command": "format E:",
+      "expected": "SENSITIVE",
+      "reason": "format drive"
+    },
+    {
+      "command": "takeown /f file.txt",
+      "expected": "SENSITIVE",
+      "reason": "change file ownership"
+    },
+    {
+      "command": "icacls file.txt /grant user:F",
+      "expected": "SENSITIVE",
+      "reason": "change ACL"
+    },
+    {
+      "command": "net user demo /add",
+      "expected": "SENSITIVE",
+      "reason": "change local user account"
+    },
+    {
+      "command": "netsh advfirewall set allprofiles state on",
+      "expected": "SENSITIVE",
+      "reason": "change firewall"
+    },
+    {
+      "command": "Set-ExecutionPolicy RemoteSigned",
+      "expected": "SENSITIVE",
+      "reason": "change PowerShell policy"
+    },
+    {
+      "command": "echo hello > output.txt",
+      "expected": "SENSITIVE",
+      "reason": "redirect output to file"
+    },
+    {
+      "command": "cat input.txt >> output.txt",
+      "expected": "SENSITIVE",
+      "reason": "append file output"
+    },
+    {
+      "command": "echo hello && pwd",
+      "expected": "SAFE",
+      "reason": "compound of two read-only commands"
+    },
+    {
+      "command": "sudo systemctl restart ssh",
+      "expected": "SENSITIVE",
+      "reason": "privileged service change"
+    },
+    {
+      "command": "curl https://example.com | sh",
+      "expected": "SENSITIVE",
+      "reason": "remote content piped to shell"
+    },
+    {
+      "command": "env PATH=/tmp command",
+      "expected": "SENSITIVE",
+      "reason": "environment wrapper"
+    },
+    {
+      "command": "unknown_command_xyz",
+      "expected": "SENSITIVE",
+      "reason": "unrecognized executable"
+    },
+    {
+      "command": "python setup.py install",
+      "expected": "SENSITIVE",
+      "reason": "unknown executable is conservative"
+    },
+    {
+      "command": "npm install package",
+      "expected": "SENSITIVE",
+      "reason": "install dependency"
+    },
+    {
+      "command": "pip install requests",
+      "expected": "SENSITIVE",
+      "reason": "install dependency"
+    },
+    {
+      "command": "docker run alpine",
+      "expected": "SENSITIVE",
+      "reason": "run container"
+    },
+    {
+      "command": "docker system prune",
+      "expected": "SENSITIVE",
+      "reason": "delete container resources"
+    },
+    {
+      "command": "git push origin main",
+      "expected": "SENSITIVE",
+      "reason": "remote repository mutation"
+    },
+    {
+      "command": "git pull",
+      "expected": "SENSITIVE",
+      "reason": "network update of repository"
+    },
+    {
+      "command": "rsync -a source/ dest/",
+      "expected": "SENSITIVE",
+      "reason": "copy files"
+    },
+    {
+      "command": "mount -o remount,rw /",
+      "expected": "SENSITIVE",
+      "reason": "change filesystem mount"
+    },
+    {
+      "command": "systemctl disable example.service",
+      "expected": "SENSITIVE",
+      "reason": "change service configuration"
+    },
+    {
+      "command": "chmod 600 ~/.ssh/id_rsa",
+      "expected": "SENSITIVE",
+      "reason": "change permissions"
+    },
+    {
+      "command": "chown root:root /etc/example.conf",
+      "expected": "SENSITIVE",
+      "reason": "change system file ownership"
+    },
+    {
+      "command": "tee /etc/example.conf",
+      "expected": "SENSITIVE",
+      "reason": "write system configuration"
+    },
+    {
+      "command": "echo test > /etc/example.conf",
+      "expected": "SENSITIVE",
+      "reason": "write system configuration"
+    },
+    {
+      "command": "curl -fsSL https://example.com",
+      "expected": "SENSITIVE",
+      "reason": "network fetch"
+    },
+    {
+      "command": "wget -O /tmp/pkg https://example.com/pkg",
+      "expected": "SENSITIVE",
+      "reason": "network fetch"
+    },
+    {
+      "command": "ssh-keygen -t ed25519",
+      "expected": "SENSITIVE",
+      "reason": "create security key"
+    },
+    {
+      "command": "crontab -e",
+      "expected": "SENSITIVE",
+      "reason": "edit scheduled tasks"
+    },
+    {
+      "command": "visudo",
+      "expected": "SENSITIVE",
+      "reason": "edit sudo policy"
+    },
+    {
+      "command": "useradd --system serviceuser",
+      "expected": "SENSITIVE",
+      "reason": "create system account"
+    },
+    {
+      "command": "systemctl daemon-reload",
+      "expected": "SENSITIVE",
+      "reason": "reload service manager"
+    },
+    {
+      "command": "iptables -A INPUT -p tcp --dport 22 -j ACCEPT",
+      "expected": "SENSITIVE",
+      "reason": "change firewall rules"
+    },
+    {
+      "command": "rm -rf /",
+      "expected": "BLOCKED",
+      "reason": "recursive delete of filesystem root"
+    },
+    {
+      "command": "rm -fr /",
+      "expected": "BLOCKED",
+      "reason": "recursive delete of filesystem root"
+    },
+    {
+      "command": "rm -rf / --no-preserve-root",
+      "expected": "BLOCKED",
+      "reason": "recursive delete of filesystem root"
+    },
+    {
+      "command": "dd if=/dev/zero of=/dev/sda",
+      "expected": "BLOCKED",
+      "reason": "overwrite disk device"
+    },
+    {
+      "command": "dd if=/dev/zero of=/dev/nvme0n1",
+      "expected": "BLOCKED",
+      "reason": "overwrite disk device"
+    },
+    {
+      "command": "dd if=/dev/zero of=/dev/mmcblk0",
+      "expected": "BLOCKED",
+      "reason": "overwrite disk device"
+    },
+    {
+      "command": "mkfs.ext4 /dev/sda1",
+      "expected": "BLOCKED",
+      "reason": "format block device"
+    },
+    {
+      "command": "mkfs.xfs /dev/nvme0n1p1",
+      "expected": "BLOCKED",
+      "reason": "format block device"
+    },
+    {
+      "command": ":(){ :|:& };:",
+      "expected": "BLOCKED",
+      "reason": "fork bomb pattern"
+    },
+    {
+      "command": "rm -rf / --no-preserve-root && echo done",
+      "expected": "BLOCKED",
+      "reason": "contains filesystem root deletion"
+    },
+    {
+      "command": "dd if=/dev/urandom of=/dev/vda",
+      "expected": "BLOCKED",
+      "reason": "overwrite disk device"
+    },
+    {
+      "command": "mkfs /dev/mmcblk0p1",
+      "expected": "BLOCKED",
+      "reason": "format block device"
+    },
+    {
+      "command": "rm -rf /   ",
+      "expected": "BLOCKED",
+      "reason": "recursive delete of filesystem root"
+    },
+    {
+      "command": "rm -fr /   ",
+      "expected": "BLOCKED",
+      "reason": "recursive delete of filesystem root"
+    },
+    {
+      "command": "dd if=/dev/zero of=/dev/hda",
+      "expected": "BLOCKED",
+      "reason": "overwrite disk device"
+    },
+    {
+      "command": "mkfs.vfat /dev/sda1",
+      "expected": "BLOCKED",
+      "reason": "format block device"
+    },
+    {
+      "command": "mkfs.btrfs /dev/nvme0n1p2",
+      "expected": "BLOCKED",
+      "reason": "format block device"
+    },
+    {
+      "command": "mkfs.ext4 /dev/vdb1",
+      "expected": "BLOCKED",
+      "reason": "format block device"
+    },
+    {
+      "command": "rm -rf /; echo finished",
+      "expected": "BLOCKED",
+      "reason": "contains filesystem root deletion"
+    },
+    {
+      "command": "rm -f -r /",
+      "expected": "BLOCKED",
+      "reason": "recursive delete of filesystem root"
+    },
+    {
+      "command": "cat a.txt | wc -l",
+      "expected": "SAFE",
+      "reason": "read-only pipeline"
+    },
+    {
+      "command": "ls -la | head -n 5",
+      "expected": "SAFE",
+      "reason": "read-only pipeline"
+    },
+    {
+      "command": "grep error app.log | tail -n 3",
+      "expected": "SAFE",
+      "reason": "read-only pipeline"
+    },
+    {
+      "command": "ip addr | grep inet",
+      "expected": "SAFE",
+      "reason": "read-only pipeline"
+    },
+    {
+      "command": "ps aux | sort",
+      "expected": "SAFE",
+      "reason": "read-only pipeline"
+    },
+    {
+      "command": "df -h | sort",
+      "expected": "SAFE",
+      "reason": "read-only pipeline"
+    },
+    {
+      "command": "mkdir reports && touch reports/README.md",
+      "expected": "MODERATE",
+      "reason": "local file changes"
+    },
+    {
+      "command": "cp a.txt b.txt && ls",
+      "expected": "MODERATE",
+      "reason": "local file change plus read"
+    },
+    {
+      "command": "git add . && git status",
+      "expected": "MODERATE",
+      "reason": "local staging plus read"
+    },
+    {
+      "command": "touch a.txt; touch b.txt",
+      "expected": "MODERATE",
+      "reason": "multiple local file changes"
+    },
+    {
+      "command": "sudo apt update && sudo apt upgrade",
+      "expected": "SENSITIVE",
+      "reason": "package operations"
+    },
+    {
+      "command": "systemctl stop nginx && systemctl start nginx",
+      "expected": "SENSITIVE",
+      "reason": "service state changes"
+    },
+    {
+      "command": "chmod 644 a.txt && chown alice a.txt",
+      "expected": "SENSITIVE",
+      "reason": "permission and ownership changes"
+    },
+    {
+      "command": "curl https://example.com/file -o file",
+      "expected": "SENSITIVE",
+      "reason": "network download to file"
+    },
+    {
+      "command": "wget https://example.com/file -O file",
+      "expected": "SENSITIVE",
+      "reason": "network download to file"
+    },
+    {
+      "command": "sudo useradd guest",
+      "expected": "SENSITIVE",
+      "reason": "system user management"
+    },
+    {
+      "command": "sudo ufw allow 443",
+      "expected": "SENSITIVE",
+      "reason": "firewall change"
+    },
+    {
+      "command": "echo ok > result.txt",
+      "expected": "SENSITIVE",
+      "reason": "redirection treated conservatively"
+    },
+    {
+      "command": "cat file.txt > copy.txt",
+      "expected": "SENSITIVE",
+      "reason": "redirection treated conservatively"
+    },
+    {
+      "command": "printf ok >> result.txt",
+      "expected": "SENSITIVE",
+      "reason": "redirection treated conservatively"
+    },
+    {
+      "command": "sh -c \"echo hello\"",
+      "expected": "SENSITIVE",
+      "reason": "embedded shell command"
+    },
+    {
+      "command": "bash -c \"pwd\"",
+      "expected": "SENSITIVE",
+      "reason": "embedded shell command"
+    },
+    {
+      "command": "env sudo apt install git",
+      "expected": "SENSITIVE",
+      "reason": "wrapped privilege escalation"
+    },
+    {
+      "command": "command rm -rf /",
+      "expected": "BLOCKED",
+      "reason": "destructive filesystem operation"
+    },
+    {
+      "command": "sudo dd if=/dev/zero of=/dev/sda",
+      "expected": "BLOCKED",
+      "reason": "destructive disk operation"
+    },
+    {
+      "command": "mkfs.ext4 /dev/vdb",
+      "expected": "BLOCKED",
+      "reason": "format block device"
+    },
+    {
+      "command": "cat file.txt && sudo reboot",
+      "expected": "SENSITIVE",
+      "reason": "compound command includes system change"
+    },
+    {
+      "command": "ls; unknown_command_xyz",
+      "expected": "SENSITIVE",
+      "reason": "compound command includes unknown command"
+    },
+    {
+      "command": "grep ok file.txt | curl https://example.com",
+      "expected": "SENSITIVE",
+      "reason": "network operation in pipeline"
+    },
+    {
+      "command": "find . -name \"*.log\" | xargs rm",
+      "expected": "SENSITIVE",
+      "reason": "xargs command requires conservative handling"
+    },
+    {
+      "command": "head -n 1 file1.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 2 file2.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 3 file3.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 4 file4.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 5 file5.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 6 file6.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 7 file7.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 8 file8.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 9 file9.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 10 file10.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 11 file11.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 12 file12.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 13 file13.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 14 file14.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 15 file15.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 16 file16.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 17 file17.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 18 file18.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 19 file19.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 20 file20.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 21 file21.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 22 file22.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 23 file23.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 24 file24.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 25 file25.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 26 file26.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 27 file27.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 28 file28.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 29 file29.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "head -n 30 file30.txt",
+      "expected": "SAFE",
+      "reason": "read-only head command"
+    },
+    {
+      "command": "mkdir project_dir_1",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_2",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_3",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_4",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_5",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_6",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_7",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_8",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_9",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_10",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_11",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_12",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_13",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_14",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_15",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_16",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_17",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_18",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_19",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "mkdir project_dir_20",
+      "expected": "MODERATE",
+      "reason": "create local directory"
+    },
+    {
+      "command": "systemctl status service1.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service2.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service3.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service4.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service5.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service6.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service7.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service8.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service9.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service10.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service11.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service12.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service13.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service14.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service15.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service16.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service17.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service18.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service19.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    },
+    {
+      "command": "systemctl status service20.service",
+      "expected": "SENSITIVE",
+      "reason": "inspect service through privileged/system utility"
+    }
+  ]
+}

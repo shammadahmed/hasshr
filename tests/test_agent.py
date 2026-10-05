@@ -113,7 +113,8 @@ def test_verifier_cannot_use_mutating_tools(registry, journal, tmp_path):
     report = agent.run("check only")
     assert report.ok and not (tmp_path / "sneaky").exists()
     verifier_tools = [t["function"]["name"] for t in llm.calls[2][1]]
-    assert verifier_tools == ["list_files"]  # only read-only tools are offered
+    assert "list_files" in verifier_tools and "create_folder" not in verifier_tools
+    assert all(registry.get(t).read_only for t in verifier_tools)  # only read-only tools are offered
 
 
 def test_unparseable_verdict_is_not_success(registry, journal):

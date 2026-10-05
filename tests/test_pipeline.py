@@ -63,7 +63,7 @@ def test_blocked_is_refused_in_every_mode(registry, journal, ctx):
 def test_auto_mode_runs_sensitive_without_asking(registry, journal, ctx):
     ctx.mode = Mode.AUTO
     approver = FakeApprover()
-    result = make_pipeline(registry, journal, approver).execute(shell("echo a | cat"), ctx)
+    result = make_pipeline(registry, journal, approver).execute(shell("sudo apt update"), ctx)
     assert result.ok and approver.requests == []
 
 
@@ -99,8 +99,8 @@ def test_llm_can_raise_risk_but_never_lower_it(registry, journal, ctx):
 def test_always_allow_skips_second_prompt(registry, journal, ctx):
     approver = FakeApprover(ApprovalChoice.ALWAYS)
     pipe = make_pipeline(registry, journal, approver)
-    pipe.execute(shell("echo a | cat"), ctx)
-    pipe.execute(shell("echo a | cat"), ctx)
+    pipe.execute(shell("sudo apt update"), ctx)
+    pipe.execute(shell("sudo apt update"), ctx)
     assert len(approver.requests) == 1
 
 
@@ -115,7 +115,7 @@ def test_always_is_ignored_for_irreversible_steps(registry, journal, ctx):
 def test_edited_command_is_reclassified(registry, journal, ctx):
     edit = ApprovalResponse(ApprovalChoice.EDIT, "rm -rf /")
     approver = FakeApprover(edit)
-    result = make_pipeline(registry, journal, approver).execute(shell("echo a | cat"), ctx)
+    result = make_pipeline(registry, journal, approver).execute(shell("sudo apt update"), ctx)
     assert result.refused  # the edit turned it into a hard-blocked command
     assert spy(registry).ran == []
 

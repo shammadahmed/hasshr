@@ -2,54 +2,146 @@
 
 Operate your computer in plain language, with safety controls you can trust.
 
-```
+```bash
 pip install termiai
 termiai "find my largest files"
+termiai case new "nginx fails to start on boot" --test "systemctl is-active nginx"
+termiai undo
+```
+
+---
+
+## Key Capabilities
+
+1. **Agent Loop (M1)**: Autonomous planning, step-by-step tool execution, and independent verification with read-only tools and replanning (up to 3 retries).
+2. **Deterministic Safety Engine (M2)**: Multi-layer fail-closed classifier with shlex/AST inspection, hard-block detection (`rm -rf /`, `dd`, fork bombs, etc.), and granular permission modes (`ask-all`, `ask-sensitive`, `auto`, `paranoid`, `plan-only`). Irreversible actions always require approval.
+3. **18 Typed Tools & Platform Adapters (M3)**: Native cross-platform operations (Linux, macOS, Windows) for file manipulation with Trash support, search, unified diff edits, system telemetry, log tailing, package state, service state, clipboard, web fetch, and safe single-boot kernel rollback (`grub-reboot`).
+4. **Append-Only Journal, Snapshots & Undo (M4)**: Tamper-evident JSONL audit trails, automatic SHA-256 pre-execution backups, secret redaction (`api_key`, `token`, `password`), corrupted tail tolerance, and exact file/action rollbacks (`termiai undo`).
+5. **System Troubleshooting Cases (M5)**: Structured problem-solving lifecycle:
+   - Measurable success test definition and approval.
+   - Strictly read-only diagnostic phase.
+   - Ranked hypotheses with confidence labels (`CONFIRMED`, `LIKELY`, `SPECULATION`).
+   - One-at-a-time trial execution with instant rollback on failure.
+   - Clean-room confirmation (reverting winner and reapplying to ensure it alone resolves the issue).
+   - Automated reboot survival and state preservation (`termiai case resume <case_id>`).
+   - Distro kernel regression detection and single-boot recovery.
+   - Markdown evidence reports generated at `~/.termiai/cases/<case_id>-report.md`.
+6. **Rich CLI & Configuration (M6)**: Interactive streaming terminal UI, model provider integration via LiteLLM (`gpt-4o`, `claude-3-5-sonnet`, `gemini-1.5-pro`, local models via Ollama), and persistent configuration (`termiai config`).
+
+---
+
+## Installation & Setup
+
+```bash
+pip install termiai
+
+# Configure your preferred LLM provider & API key
+termiai config set model gpt-4o
+termiai config set api_key sk-...
+
+# Or configure local Ollama / Open-source models
+termiai config set model ollama/llama3
+```
+
+---
+
+## Usage
+
+### 1. One-Shot & Interactive Assistant
+
+```bash
+# Execute a single natural language instruction
+termiai "compress all pdf files in ~/Documents"
+
+# Run in plan-only mode (inspect the plan without executing changes)
+termiai "clean up old log files in /var/log" --plan-only
+
+# Run in auto mode (safely auto-approves reversible actions)
+termiai "organize my Downloads folder by file extension" --auto
+
+# Interactive agent session
 termiai
 ```
 
-> Status: **walking skeleton (gate G1)**. The agent loop, execution pipeline and contracts are real and tested; safety, journal, tools, CLI and LLM layer are stubs owned by other members (see `OWNERS.md`).
-
-## Try the skeleton (no API key)
+### 2. Troubleshooting Cases
 
 ```bash
+# Start a new structured troubleshooting investigation
+termiai case new "web server 502 bad gateway" --test "curl -f http://localhost:80"
+
+# List past and ongoing troubleshooting cases
+termiai case list
+
+# Resume an investigation after a reboot or pause
+termiai case resume <case_id>
+
+# Undo all modifications performed during a case
+termiai case undo <case_id>
+
+# Monitor upstream issue trackers and distro package feeds
+termiai case watch <case_id>
+```
+
+### 3. Journal & Rollback
+
+```bash
+# View recent execution history and audit entries
+termiai history
+
+# Undo the most recent reversible action
+termiai undo
+
+# Undo a specific journal entry by ID
+termiai undo <entry_id>
+```
+
+---
+
+## Architecture & Pipeline
+
+Every tool call is strictly governed by the TermiAI pipeline:
+
+```
+User Prompt -> Planner -> Plan Steps -> Executor
+                                           |
+                                      Tool Call
+                                           |
+                              Deterministic Classifier (M2)
+                                           |
+                              Permission Mode Decision
+                                           |
+                       +-------------------+-------------------+
+                       |                   |                   |
+                    [ALLOW]              [ASK]              [REFUSE]
+                       |                   |                   |
+                       |             User Approves?          Aborted
+                       |             (Yes/No/Edit)             |
+                       +-------------------+                   |
+                                           |                   |
+                                      Snapshot &               |
+                                     Journal Before            |
+                                           |                   |
+                                      Execute Tool             |
+                                           |                   |
+                                     Journal After &           |
+                                     Redact Secrets            |
+                                           |                   |
+                                      Independent              |
+                                     Verifier Check            |
+                                           |                   |
+                                      Plan Success?            |
+                                      (or Replan)              |
+```
+
+---
+
+## Development & Testing
+
+```bash
+git clone https://github.com/your-org/termiai.git
+cd termiai
 pip install -e ".[dev]"
-python -m termiai --mock "list my Downloads"
-pytest -q
+
+# Run full test suite
+pytest
 ```
-
-## How it works
-
-```
-prompt -> Planner -> steps -> Executor -> tool calls -> Pipeline -> Verifier -> report
-                                                          |
-         classify -> decide -> (ask user) -> journal.before -> tool -> journal.after
-```
-
-- **Planner** turns the request into plain-language steps (falls back to one step if the LLM output is malformed).
-- **Executor** carries out each step with tool calls.
-- **Pipeline** is the only way a tool can run: risk is classified by rules (the LLM's own rating can only raise it), the permission mode decides allow/ask/refuse, irreversible steps always ask, and everything is journaled and audited.
-- **Verifier** checks the real system state using read-only tools and may trigger a replan (max 3 retries). An unparseable verdict counts as *not* verified.
-- Limits: 25 Executor/Verifier LLM round-trips per run, 3 retries.
-
-Permission modes: `ask-all`, `ask-sensitive` (default), `auto`. Hard-blocked commands are refused in every mode.
-
-## Layout
-
-```
-termiai/
-  contracts.py     shared data structures (M1; change only by agreement)
-  pipeline.py      the execution pipeline (M1)
-  agent.py         orchestrator: plan -> execute -> verify -> replan (M1)
-  agents/          planner, executor, verifier (M1)
-  prompts.py       system prompts (M1)
-  safety/          classifier + permission modes (M2, stubs)
-  tools/           typed tools + run_shell (M3, stubs)
-  journal/         journal, undo, audit (M4, stub)
-  llm/             provider layer (M6) + scripted LLM for tests/demo
-  cli.py           command line (M6, minimal)
-tests/
-docs/KICKOFF.md    kickoff meeting agenda and decisions
-```
-
-See `CONTRIBUTING.md` for the working rules.
