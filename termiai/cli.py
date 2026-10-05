@@ -195,35 +195,59 @@ def is_troubleshooting_prompt(prompt: str) -> bool:
 
 
 def main(argv: list[str] | None = None) -> int:
+    raw_argv = sys.argv[1:] if argv is None else list(argv)
+    subcommands = {"case", "resume", "undo", "history", "watch", "config"}
+    has_subcommand = False
+    skip_next = False
+    for a in raw_argv:
+        if skip_next:
+            skip_next = False
+            continue
+        if a in ("--mode", "--model"):
+            skip_next = True
+            continue
+        if a in subcommands:
+            has_subcommand = True
+            break
+        if a.startswith("-"):
+            continue
+
     parser = argparse.ArgumentParser(prog="termiai", description="Prompt your computer.")
-    parser.add_argument("prompt", nargs="?", help="what you want done; omit for interactive mode")
     parser.add_argument("--mode", choices=[m.value for m in Mode], default=Mode.ASK_SENSITIVE.value)
     parser.add_argument("--model", help="LLM model name (M6)")
     parser.add_argument("--mock", action="store_true", help="use the scripted demo LLM")
 
-    subparsers = parser.add_subparsers(dest="subcommand")
+    if has_subcommand or ("-h" in raw_argv or "--help" in raw_argv):
+        subparsers = parser.add_subparsers(dest="subcommand")
 
-    case_parser = subparsers.add_parser("case", help="Start or manage a troubleshooting Case")
-    case_parser.add_argument("problem", nargs="?", help="Problem description")
-    case_parser.add_argument("--test", help="Measurable success test command")
-    case_parser.add_argument("action", nargs="?", help="undo [case_id]")
-    case_parser.add_argument("target_id", nargs="?", help="case ID for undo")
+        case_parser = subparsers.add_parser("case", help="Start or manage a troubleshooting Case")
+        case_parser.add_argument("problem", nargs="?", help="Problem description")
+        case_parser.add_argument("--test", help="Measurable success test command")
+        case_parser.add_argument("action", nargs="?", help="undo [case_id]")
+        case_parser.add_argument("target_id", nargs="?", help="case ID for undo")
 
-    subparsers.add_parser("resume", help="Resume an active Case after reboot")
+        subparsers.add_parser("resume", help="Resume an active Case after reboot")
 
-    undo_parser = subparsers.add_parser("undo", help="Revert the last change or specific action/case")
-    undo_parser.add_argument("id", nargs="?", help="Action ID or Case ID")
+        undo_parser = subparsers.add_parser("undo", help="Revert the last change or specific action/case")
+        undo_parser.add_argument("id", nargs="?", help="Action ID or Case ID")
 
-    subparsers.add_parser("history", help="Show recent action history and journal audit trail")
+        subparsers.add_parser("history", help="Show recent action history and journal audit trail")
 
-    watch_parser = subparsers.add_parser("watch", help="Check upstream for fixes to known issues")
-    watch_parser.add_argument("case_id", nargs="?", help="Case ID to watch")
+        watch_parser = subparsers.add_parser("watch", help="Check upstream for fixes to known issues")
+        watch_parser.add_argument("case_id", nargs="?", help="Case ID to watch")
 
-    config_parser = subparsers.add_parser("config", help="View or modify TermiAI configuration")
-    config_parser.add_argument("key", nargs="?", help="Config key to set")
-    config_parser.add_argument("val", nargs="?", help="Config value to set")
+        config_parser = subparsers.add_parser("config", help="View or modify TermiAI configuration")
+        config_parser.add_argument("key", nargs="?", help="Config key to set")
+        config_parser.add_argument("val", nargs="?", help="Config value to set")
 
-    args = parser.parse_args(argv)
+    if not has_subcommand:
+        parser.add_argument("prompt", nargs="*", help="what you want done; omit for interactive mode")
+        args = parser.parse_args(argv)
+        args.subcommand = None
+        args.prompt = " ".join(args.prompt) if args.prompt else None
+    else:
+        args = parser.parse_args(argv)
+        args.prompt = None
 
     if args.subcommand == "case":
         if args.problem == "undo":
