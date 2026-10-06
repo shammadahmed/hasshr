@@ -3,11 +3,11 @@ import time
 
 import pytest
 
-from termiai.contracts import Reversibility as R
-from termiai.platform import LinuxAdapter
-from termiai.tools import shell as shell_mod
-from termiai.tools.base import ToolError
-from termiai.tools.shell import MAX_STREAM_CHARS, RunShell, truncate_middle
+from hasshr.contracts import Reversibility as R
+from hasshr.platform import LinuxAdapter
+from hasshr.tools import shell as shell_mod
+from hasshr.tools.base import ToolError
+from hasshr.tools.shell import MAX_STREAM_CHARS, RunShell, truncate_middle
 
 pytestmark = pytest.mark.skipif(not __import__("shutil").which("bash"), reason="needs bash")
 

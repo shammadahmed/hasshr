@@ -2,15 +2,15 @@ from __future__ import annotations
 
 from conftest import FakeApprover, make_pipeline
 
-from termiai.agent import Agent
-from termiai.contracts import (
+from hasshr.agent import Agent
+from hasshr.contracts import (
     ApprovalChoice,
     Context,
     LLMResponse,
     Mode,
     ToolCall,
 )
-from termiai.llm import ScriptedLLM, demo_script, reply
+from hasshr.llm import ScriptedLLM, demo_script, reply
 
 PLAN_ONE = '{"steps": [{"description": "make the folder"}]}'
 OK = '{"ok": true, "notes": "all good"}'

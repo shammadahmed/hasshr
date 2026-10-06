@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from termiai.platform import (
+from hasshr.platform import (
     EnvInfo,
     LinuxAdapter,
     MacAdapter,
@@ -10,7 +10,7 @@ from termiai.platform import (
     detect_environment,
     get_adapter,
 )
-from termiai.platform.detect import parse_os_release
+from hasshr.platform.detect import parse_os_release
 
 UBUNTU = '''NAME="Ubuntu"
 VERSION_ID="24.04"

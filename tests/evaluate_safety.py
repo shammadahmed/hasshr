@@ -9,8 +9,8 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from termiai.contracts import Context
-from termiai.safety.classifier import classify
+from hasshr.contracts import Context
+from hasshr.safety.classifier import classify
 
 CORPUS = Path(__file__).with_name("command_corpus.json")
 

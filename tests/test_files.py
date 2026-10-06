@@ -4,9 +4,9 @@ from pathlib import Path
 
 import pytest
 
-from termiai.contracts import Reversibility as R
-from termiai.tools.base import ToolError
-from termiai.tools.files import (
+from hasshr.contracts import Reversibility as R
+from hasshr.tools.base import ToolError
+from hasshr.tools.files import (
     CopyFile,
     CreateFolder,
     DeleteToTrash,

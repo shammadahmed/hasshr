@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from termiai.contracts import (
+from hasshr.contracts import (
     ApprovalChoice,
     ApprovalRequest,
     ApprovalResponse,
@@ -15,11 +15,11 @@ from termiai.contracts import (
     Mode,
     ToolResult,
 )
-from termiai.journal import Journal
-from termiai.pipeline import Pipeline
-from termiai.platform import get_adapter
-from termiai.tools import default_registry
-from termiai.tools.shell import RunShell
+from hasshr.journal import Journal
+from hasshr.pipeline import Pipeline
+from hasshr.platform import get_adapter
+from hasshr.tools import default_registry
+from hasshr.tools.shell import RunShell
 
 
 class FakeApprover:

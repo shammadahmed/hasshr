@@ -1,10 +1,10 @@
 
 import pytest
 
-from termiai.platform import EnvInfo
-from termiai.tools import collectors as col
-from termiai.tools.files import sha256_file
-from termiai.tools.procutil import Captured
+from hasshr.platform import EnvInfo
+from hasshr.tools import collectors as col
+from hasshr.tools.files import sha256_file
+from hasshr.tools.procutil import Captured
 
 
 def patch_capture(monkeypatch, mapping):

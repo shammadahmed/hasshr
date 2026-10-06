@@ -2,8 +2,8 @@ import subprocess
 
 import pytest
 
-from termiai.tools import privilege
-from termiai.tools.base import ToolError
+from hasshr.tools import privilege
+from hasshr.tools.base import ToolError
 
 
 def test_root_needs_nothing(ctx, monkeypatch):

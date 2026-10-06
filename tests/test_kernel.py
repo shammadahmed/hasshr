@@ -2,9 +2,9 @@ import subprocess
 
 import pytest
 
-from termiai.contracts import Reversibility as R
-from termiai.tools import kernel as k
-from termiai.tools.kernel import (
+from hasshr.contracts import Reversibility as R
+from hasshr.tools import kernel as k
+from hasshr.tools.kernel import (
     ListKernels,
     RebootIntoKernelOnce,
     find_menu_entry,

@@ -1,9 +1,9 @@
 import pytest
 
-from termiai.contracts import Reversibility as R
-from termiai.tools import system as sysmod
-from termiai.tools.procutil import Captured, run_capture, try_capture
-from termiai.tools.system import (
+from hasshr.contracts import Reversibility as R
+from hasshr.tools import system as sysmod
+from hasshr.tools.procutil import Captured, run_capture, try_capture
+from hasshr.tools.system import (
     GetSystemInfo,
     ReadDeviceInfo,
     ReadLogs,
@@ -42,7 +42,7 @@ def test_every_diagnostic_tool_is_read_only_and_full(ctx):
 
 # ---------------------------------------------------------------- procutil
 def test_run_capture_missing_program_and_timeout():
-    from termiai.tools.base import ToolError
+    from hasshr.tools.base import ToolError
 
     with pytest.raises(ToolError, match="not installed"):
         run_capture(["definitely_not_a_program_xyz"])

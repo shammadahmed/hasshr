@@ -1,9 +1,9 @@
 import pytest
 
-from termiai.contracts import Reversibility, ToolResult
-from termiai.tools import StubJournal, Tool, ToolContext, ToolRegistry, default_registry
-from termiai.tools.edit import EditFile
-from termiai.tools.files import ListFiles, MoveFile
+from hasshr.contracts import Reversibility, ToolResult
+from hasshr.tools import StubJournal, Tool, ToolContext, ToolRegistry, default_registry
+from hasshr.tools.edit import EditFile
+from hasshr.tools.files import ListFiles, MoveFile
 
 
 class Dummy(Tool):

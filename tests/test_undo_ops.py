@@ -1,10 +1,10 @@
 import subprocess
 from pathlib import Path
 
-from termiai.tools import undo_ops
-from termiai.tools.edit import EditFile
-from termiai.tools.files import CopyFile, CreateFolder, DeleteToTrash, MoveFile, sha256_file
-from termiai.tools.undo_ops import find_in_trash, undo_operation
+from hasshr.tools import undo_ops
+from hasshr.tools.edit import EditFile
+from hasshr.tools.files import CopyFile, CreateFolder, DeleteToTrash, MoveFile, sha256_file
+from hasshr.tools.undo_ops import find_in_trash, undo_operation
 
 
 def write(home: Path, rel: str, content: str) -> Path:
@@ -200,7 +200,7 @@ def test_shell_commands_are_reported_as_not_undoable(ctx):
 
 
 def test_undo_boot_once_clears_next_entry(ctx, monkeypatch):
-    monkeypatch.setattr("termiai.tools.privilege.ensure_admin", lambda c: None)
+    monkeypatch.setattr("hasshr.tools.privilege.ensure_admin", lambda c: None)
     seen = {}
 
     def run(cmd, **kw):
@@ -213,7 +213,7 @@ def test_undo_boot_once_clears_next_entry(ctx, monkeypatch):
 
 
 def test_undo_boot_once_failure_and_missing_tool(ctx, monkeypatch):
-    monkeypatch.setattr("termiai.tools.privilege.ensure_admin", lambda c: None)
+    monkeypatch.setattr("hasshr.tools.privilege.ensure_admin", lambda c: None)
     monkeypatch.setattr(subprocess, "run", lambda cmd, **kw: subprocess.CompletedProcess(cmd, 1, "", "denied"))
     out = undo_operation({"op": "bootonce", "editenv": "grub-editenv"}, ctx)
     assert not out.ok and "unset next_entry" in out.manual_steps

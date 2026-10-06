@@ -1,0 +1,970 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}</style><style>:root{color-scheme:light dark;--md-bg:#fff;--md-text:rgba(0,0,0,.8);--md-muted:rgba(0,0,0,.6);--md-fill:rgba(0,0,0,.04);--md-fill-strong:rgba(0,0,0,.06);--md-rule:rgba(0,0,0,.1);--md-rule-strong:rgba(0,0,0,.16);--md-link:hsl(210 100% 45%)}@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])){--md-bg:#0d0d0d;--md-text:rgba(255,255,255,.85);--md-muted:rgba(255,255,255,.6);--md-fill:rgba(255,255,255,.06);--md-fill-strong:rgba(255,255,255,.09);--md-rule:rgba(255,255,255,.14);--md-rule-strong:rgba(255,255,255,.22);--md-link:hsl(210 100% 72%)}}:root[data-theme="dark"]{color-scheme:dark;--md-bg:#0d0d0d;--md-text:rgba(255,255,255,.85);--md-muted:rgba(255,255,255,.6);--md-fill:rgba(255,255,255,.06);--md-fill-strong:rgba(255,255,255,.09);--md-rule:rgba(255,255,255,.14);--md-rule-strong:rgba(255,255,255,.22);--md-link:hsl(210 100% 72%)}:root[data-theme="light"]{color-scheme:light}@media print{:root,:root[data-theme="dark"]{color-scheme:light;--md-bg:#fff;--md-text:rgba(0,0,0,.8);--md-muted:rgba(0,0,0,.6);--md-fill:rgba(0,0,0,.04);--md-fill-strong:rgba(0,0,0,.06);--md-rule:rgba(0,0,0,.1);--md-rule-strong:rgba(0,0,0,.16);--md-link:hsl(210 100% 45%)}}body{background:var(--md-bg);color:var(--md-text);max-width:720px;margin:0 auto;padding:32px;display:flex;flex-direction:column;gap:10px;font:14px/1.55 -apple-system,BlinkMacSystemFont,'SF Pro','Segoe UI',sans-serif;overflow-wrap:break-word}body>:first-child{margin-top:0}h1,h2,h3,h4,h5,h6{margin:6px 0 0;line-height:1.25;font-weight:600;text-wrap:balance}h1{font-size:1.35em}h2{font-size:1.15em;color:var(--md-muted)}h3,h4,h5,h6{font-size:1em}p,ul,ol,blockquote,table,pre,hr{margin:0}strong{font-weight:600}a{color:var(--md-link);text-decoration:none}a:hover{text-decoration:underline}ul,ol{display:flex;flex-direction:column;gap:6px;padding-left:22px}ul{list-style:disc}ol{list-style:decimal}:is(li,td,th)>*+:is(p,ul,ol,blockquote){margin-top:6px}blockquote{display:flex;flex-direction:column;gap:10px;border-left:2px solid var(--md-rule);padding-left:10px;color:var(--md-muted)}:not(pre)>code{background:var(--md-fill);padding:1px 3px;border-radius:4px;font:.92em 'SF Mono',ui-monospace,Menlo,Consolas,monospace}a>code{background:none;color:inherit}pre{background:var(--md-fill);padding:10px 12px;border-radius:6px;overflow-x:auto;font:12px/1.5 'SF Mono',ui-monospace,Menlo,Consolas,monospace;margin-block:4px}pre code{background:none;padding:0;font:inherit}table{width:100%;border-collapse:separate;border-spacing:2px;font:inherit}th,td{padding:6px 8px;border-radius:3px;text-align:left;vertical-align:top}th{background:var(--md-fill-strong);font-weight:600}td{background:var(--md-fill)}:is(th,td) :not(pre)>code{background:transparent}hr{border:0;border-top:1px solid var(--md-rule-strong);margin-block:10px}img{max-width:100%;height:auto;border-radius:4px}</style>
+</head><body>
+<h1>Hasshr: Product Requirements Document</h1>
+<p><strong>Version:</strong> 0.3 (hackathon draft) · <strong>Author:</strong> Hammad Ahmed · <strong>Status:</strong> Draft</p>
+<hr>
+<h2>1. Overview</h2>
+<p><strong>Hasshr</strong> is a Python CLI agent that lets anyone operate their computer by describing what they want in plain language, instead of typing Linux, macOS, or Windows commands. An LLM acts as an agent: it plans, runs real commands and tools, verifies the result, and reports back in simple language.</p>
+<pre><code>pip install hasshr
+hasshr &#34;find my largest files&#34;
+hasshr            # interactive mode
+</code></pre>
+<p><strong>One-line pitch:</strong> <em>Prompt your operating system, with safety controls that make it usable by non-programmers.</em></p>
+<h3>1.1 Hackathon fit</h3>
+<table>
+<thead>
+<tr>
+<th>Required skill</th>
+<th>How Hasshr covers it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Generative AI</td>
+<td>LLM turns intent into plans, commands, and plain-language explanations</td>
+</tr>
+<tr>
+<td>Agentic AI</td>
+<td>Tool-calling loop that acts on the machine and observes results</td>
+</tr>
+<tr>
+<td>Multi-Agent Systems</td>
+<td>Planner, Executor, and Verifier agents (Section 7)</td>
+</tr>
+<tr>
+<td>AI Workflows</td>
+<td>Plan → Approve → Execute → Verify → Log pipeline</td>
+</tr>
+<tr>
+<td>Business Process Automation</td>
+<td>Repeatable tasks (e.g. organize folders, batch updates)</td>
+</tr>
+</tbody>
+</table>
+<p>At least two are required; this design targets four.</p>
+<hr>
+<h2>2. Problem &amp; Opportunity</h2>
+<ul>
+<li>The terminal is powerful but intimidating. Many users avoid it, or paste commands they don't understand.</li>
+<li>Existing AI terminal tools (Claude Code, Gemini CLI, Open Interpreter, Warp, ShellGPT) mostly target developers and give little control over how much the agent may do.</li>
+<li>Non-programmers still need tasks like organizing files, updating software, or fixing system settings, and cannot judge whether a generated command is safe.</li>
+</ul>
+<p><strong>Opportunity:</strong> a terminal agent designed for non-programmers, with a configurable trust model, full-system capability, and an audit/undo trail.</p>
+<hr>
+<h2>3. Goals &amp; Non-Goals</h2>
+<h3>Goals</h3>
+<ol>
+<li>Cover the full range of terminal use: files, packages, services, system settings, drivers, updates, bootloader, networking.</li>
+<li>Work across Linux, macOS, and Windows.</li>
+<li>Let the user control autonomy through three permission modes.</li>
+<li>Explain every action in plain language.</li>
+<li>Be installable with one <code>pip</code> command and usable in under a minute.</li>
+<li>Keep an audit log and, where possible, undo.</li>
+<li>Diagnose and fix real system problems through guided trial and error (<strong>Troubleshooting Cases</strong>), with a change journal that allows rollback and a minimal final fix.</li>
+<li>End a Case honestly: when no fix exists (e.g. a known upstream kernel bug), say so with evidence, confidence levels, and ranked workarounds, instead of trying changes indefinitely.</li>
+</ol>
+<h3>Non-Goals (v0.1)</h3>
+<ul>
+<li>GUI or web interface.</li>
+<li>Voice input.</li>
+<li>Remote or multi-machine management.</li>
+<li>Guaranteed undo for irreversible system operations (drivers, GRUB, updates).</li>
+<li>Training or fine-tuning custom models.</li>
+</ul>
+<hr>
+<h2>4. Target Users</h2>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Description</th>
+<th>Key need</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Non-programmer (primary)</strong></td>
+<td>Student, office worker, family member</td>
+<td>Get tasks done without learning commands; feel safe</td>
+</tr>
+<tr>
+<td><strong>Casual power user</strong></td>
+<td>Knows some commands, forgets syntax</td>
+<td>Speed; fewer lookups</td>
+</tr>
+<tr>
+<td><strong>Developer / sysadmin</strong></td>
+<td>Comfortable in terminal</td>
+<td><code>auto</code> mode, scripting, own model/provider</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>5. Core User Stories</h2>
+<ol>
+<li>As a non-programmer, I want to say &quot;put all PDFs in Downloads into a folder called PDFs&quot; and see it done and verified.</li>
+<li>As a user, I want to see a plan and approve it before anything risky happens.</li>
+<li>As a user, I want to choose whether Hasshr asks about everything, only risky actions, or nothing.</li>
+<li>As a user, I want to undo a file move or delete.</li>
+<li>As a user, I want to search the web and have results listed and opened in my browser.</li>
+<li>As a user, I want to copy text and just get a confirmation.</li>
+<li>As an advanced user, I want to ask for <code>sudo</code>, package, or GRUB tasks and have the agent handle them with appropriate warnings.</li>
+<li>As a user, I want to use my own API key or a local model.</li>
+<li>As a user with a recurring system problem (e.g. no sound after boot on Ubuntu), I want the agent to diagnose it, try fixes one at a time, and revert anything that doesn't work.</li>
+<li>As a user, I want to see exactly what was changed to fix my problem, and be able to undo all of it.</li>
+<li>As a user whose problem has no real fix (e.g. a mic broken by a Linux kernel regression), I want the agent to tell me that clearly, show the evidence, and list my options (such as rolling back the kernel), including what each option costs me.</li>
+</ol>
+<hr>
+<h2>6. Functional Requirements</h2>
+<h3>6.1 Interfaces</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-1</td>
+<td>One-shot mode: <code>hasshr &quot;&lt;prompt&gt;&quot;</code> runs the task and exits</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-2</td>
+<td>Interactive mode: <code>hasshr</code> opens a session with <code>You &gt;</code> / <code>Agent &gt;</code> prompts</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-3</td>
+<td>Streaming progress with ✓ / ✗ step lines</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-4</td>
+<td>Slash commands in session: <code>/mode</code>, <code>/undo</code>, <code>/log</code>, <code>/help</code>, <code>/exit</code></td>
+<td>P1</td>
+</tr>
+<tr>
+<td>F-5</td>
+<td>Session memory within a run (follow-ups like &quot;now do the same for Documents&quot;)</td>
+<td>P1</td>
+</tr>
+</tbody>
+</table>
+<h3>6.2 Tools available to the agent</h3>
+<p><strong>Typed tools (preferred, cross-platform and safer):</strong>
+<code>list_files</code>, <code>find_files</code>, <code>read_file</code>, <code>move_file</code>, <code>copy_file</code>, <code>create_folder</code>, <code>delete_to_trash</code>, <code>search_web</code>, <code>open_url</code>, <code>copy_to_clipboard</code>, <code>get_system_info</code>.</p>
+<p><strong>General tool:</strong> <code>run_shell(command, explanation)</code> for everything else (sudo, package managers, services, GRUB, drivers, updates).</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-6</td>
+<td>The agent must prefer a typed tool when one fits and fall back to <code>run_shell</code> otherwise</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-7</td>
+<td>Every tool call includes a plain-language explanation shown to the user</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-8</td>
+<td><code>search_web</code> returns titles and URLs, prints them in the terminal, and opens selected results in the default browser</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>F-9</td>
+<td><code>copy_to_clipboard</code> copies and prints a confirmation only (no echo of content unless asked)</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>F-10</td>
+<td>Detect OS, distro/version, shell, and package manager at startup and include in the system prompt</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table>
+<h3>6.3 Permission Modes (core feature)</h3>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ask-all</code></td>
+<td>Confirm every command and tool call that changes state. Read-only calls run freely.</td>
+</tr>
+<tr>
+<td><code>ask-sensitive</code> <strong>(default)</strong></td>
+<td>Confirm only commands the risk classifier marks Sensitive or higher.</td>
+</tr>
+<tr>
+<td><code>auto</code></td>
+<td>Never ask. Hard-blocked commands still refuse unless an extra flag is set.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-11</td>
+<td>Mode selectable via <code>--mode</code>, <code>/mode</code>, and a persistent config file</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-12</td>
+<td>First run asks the user to pick a mode and explains each</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-13</td>
+<td>Enabling <code>auto</code> requires an explicit acknowledgment and shows a warning once</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-14</td>
+<td>Approval prompt shows: the plan step, exact command, plain-language effect, risk level, and options <code>[y]es / [n]o / [e]dit / [a]lways for this session</code></td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-15</td>
+<td>Mode can be changed mid-session; changes are logged</td>
+<td>P1</td>
+</tr>
+</tbody>
+</table>
+<h3>6.4 Risk Classification</h3>
+<p>Risk is decided by <strong>deterministic rules first</strong>, combined with the LLM's own rating; the <strong>higher</strong> of the two wins.</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Examples</th>
+<th>Behavior by mode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Safe</strong> (read-only)</td>
+<td><code>ls</code>, <code>cat</code>, <code>df</code>, <code>find</code>, <code>ps</code>, <code>git status</code></td>
+<td>Never asks</td>
+</tr>
+<tr>
+<td><strong>Moderate</strong> (reversible changes)</td>
+<td>Create folders, move/copy files, <code>git commit</code>, install user-level packages</td>
+<td>Asks in <code>ask-all</code> only</td>
+</tr>
+<tr>
+<td><strong>Sensitive</strong></td>
+<td><code>rm -r</code>, <code>sudo</code>, <code>chmod -R</code>, <code>chown</code>, package install/remove/upgrade (<code>apt</code>, <code>dnf</code>, <code>brew</code>, <code>winget</code>), service control, firewall, user management, writes under <code>/etc</code> or system dirs, <code>curl | sh</code>, driver installs, GRUB changes</td>
+<td>Asks in <code>ask-all</code> and <code>ask-sensitive</code></td>
+</tr>
+<tr>
+<td><strong>Blocked</strong></td>
+<td><code>rm -rf /</code>, <code>dd</code> onto disk devices, <code>mkfs</code> on mounted drives, fork bombs, wiping bootloader without a flag</td>
+<td>Refused in every mode unless <code>--allow-dangerous</code> is set</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-16</td>
+<td>Parse commands with <code>shlex</code> and a pipeline-aware analyzer (pipes, <code>&amp;&amp;</code>, <code>;</code>, subshells, <code>bash -c</code>, <code>sudo</code> wrapping)</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-17</td>
+<td>Anything the classifier cannot parse or identify is treated as <strong>Sensitive</strong></td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-18</td>
+<td>Rule set is data-driven (YAML) so it can be updated without code changes</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>F-19</td>
+<td>Hard-block list cannot be overridden by the LLM or by prompt text</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table>
+<h3>6.5 Safety, Undo, and Audit</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-20</td>
+<td>Move/delete via typed tools: back up or send to Trash first, record in an undo journal</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-21</td>
+<td><code>hasshr undo</code> reverses the last reversible action(s)</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-22</td>
+<td>For non-reversible actions (drivers, GRUB, updates, package removal), warn clearly that undo is unavailable and offer dry-run flags where available (<code>apt -s</code>, <code>rsync -n</code>)</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>F-23</td>
+<td>Append-only audit log of every prompt, plan, command, approval decision, output, and exit code, stored locally</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-24</td>
+<td><code>sudo</code> passwords are entered by the user directly into the OS prompt; never sent to the LLM, logged, or stored</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-25</td>
+<td>Verification step after state-changing tasks (e.g. confirm files exist at destination, package present, service running)</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table>
+<h3>6.6 Prompt Injection Defense</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-26</td>
+<td>Web results, file contents, and command output are passed to the LLM labeled as <strong>untrusted data</strong>, never as instructions</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-27</td>
+<td>Commands that originate after reading untrusted content are escalated one risk level in <code>auto</code> mode when they touch the network or system settings</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>F-28</td>
+<td>Never auto-run commands copied from web pages without classification</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table>
+<h3>6.7 Model &amp; Provider Support</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-29</td>
+<td>Provider-agnostic via an abstraction layer (e.g. LiteLLM): Anthropic, OpenAI, Google, and local models (Ollama / LM Studio)</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-30</td>
+<td>API key via environment variable or <code>hasshr config</code>; stored with OS keyring where possible</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>F-31</td>
+<td>Local-model mode so no data leaves the machine</td>
+<td>P1</td>
+</tr>
+</tbody>
+</table>
+<h3>6.8 Troubleshooting Cases (v0.2)</h3>
+<p>A <strong>Case</strong> is a long-running, stateful task for fixing a problem through diagnosis and trial and error. Example: <em>&quot;My Ubuntu laptop shows Dummy Output after boot and I have to run <code>sudo alsa force-reload</code> every time.&quot;</em></p>
+<p><strong>Case lifecycle</strong></p>
+<ol>
+<li><strong>Define &quot;fixed&quot;.</strong> Before changing anything, agree on a measurable success test (e.g. <code>pactl list sinks short</code> shows a real sink, not <code>auto_null</code>, after a reboot).</li>
+<li><strong>Diagnose (read-only).</strong> Collect evidence with no changes: <code>aplay -l</code>, <code>pactl info</code>, <code>dmesg</code>, <code>journalctl</code>, <code>lspci</code>, relevant config files.</li>
+<li><strong>Hypothesis plan.</strong> Produce a ranked list. Each entry has: the proposed change, why it might work, reversibility (Full / Partial / None), required reboot, and the source of the idea (own reasoning, official docs, or web result).</li>
+<li><strong>Try one hypothesis at a time.</strong> Apply, test, and <strong>roll back if it fails</strong> before trying the next. Changes are never stacked.</li>
+<li><strong>Clean-room confirm.</strong> When something works, revert everything, reapply only the winning change, and re-test. The result is a minimal fix, with no leftover experiments.</li>
+<li><strong>Report.</strong> One of four outcomes (see <em>Case outcomes</em>), with the root cause as far as known, the evidence, the final change or the ranked options, what was reverted, and the one command to undo any change made.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-32</td>
+<td><code>hasshr case &quot;&lt;problem&gt;&quot;</code> (or automatic escalation from a normal prompt) starts a Case with a persistent case ID</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-33</td>
+<td>The agent must define a success test and get user approval for it before making any change</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-34</td>
+<td>Diagnosis phase is strictly read-only; any state-changing command is blocked until the plan is approved</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-35</td>
+<td>The plan is shown as a ranked hypothesis list with reversibility labels; the user can reorder, skip, or add ideas</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-36</td>
+<td>Hypotheses are applied one at a time, with an automatic test and rollback after each failure</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-37</td>
+<td>A typed <code>edit_file</code> tool (append, replace, insert, create) is used for config changes, never an interactive editor like <code>nano</code> driven by the LLM</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-38</td>
+<td>Clean-room confirmation (revert all, reapply the winner, re-test) before a Case can be marked fixed</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>F-39</td>
+<td>Web or forum advice (Stack Overflow, Ask Ubuntu, wikis) is treated as untrusted input: shown with its source, and every command from it goes through the risk classifier</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-40</td>
+<td>Safety limits per Case: max attempts (default 8), and a user check-in after 3 consecutive failures, even in <code>auto</code> mode</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-41</td>
+<td>In <code>auto</code> mode, steps labeled reversibility <strong>None</strong> still require explicit approval</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-42</td>
+<td>Case state survives reboots: <code>hasshr resume</code> runs the success test and continues or rolls back</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>F-43</td>
+<td>Final report is saved as a markdown file for the user's records</td>
+<td>P2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Change Journal (the basis for rollback)</strong></p>
+<ul>
+<li>Before every file edit: save a timestamped backup, record the SHA-256 hash and a diff.</li>
+<li>Before and after every attempt: snapshot package list, service enabled/active state, kernel module parameters, and files created or removed.</li>
+<li>Record every command with its exit code and output (secrets redacted).</li>
+<li>Rollback replays the journal <strong>in reverse order</strong> and verifies the restored state against the snapshot.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-44</td>
+<td>Each Case has its own journal, stored locally and append-only</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-45</td>
+<td><code>hasshr case undo &lt;id&gt;</code> rolls back all or selected attempts</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-46</td>
+<td>Rollback verification: compare restored file hashes and package/service state against the pre-case snapshot, and report any difference</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>F-47</td>
+<td>Each step is labeled with reversibility <strong>before</strong> it runs</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reversibility levels</strong></p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Examples</th>
+<th>Rollback</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Full</strong></td>
+<td>Config file edits, created files, service enable/disable, module parameters</td>
+<td>Restore from backup/snapshot</td>
+</tr>
+<tr>
+<td><strong>Partial</strong></td>
+<td>Package install/removal (config and dependencies may differ), <code>apt upgrade</code> of specific packages</td>
+<td>Reverse the action, but report differences</td>
+</tr>
+<tr>
+<td><strong>None</strong></td>
+<td>Firmware flashing, kernel/driver replacement, bootloader changes, data deletion without backup</td>
+<td>Not reversible; warn, require approval, and suggest a system snapshot or backup first</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Case outcomes &amp; evidence rules</strong></p>
+<p>Not every Case ends in a fix. A Case must end in exactly one of these outcomes:</p>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fixed</strong></td>
+<td>The success test passes after a clean-room confirmation</td>
+</tr>
+<tr>
+<td><strong>Workaround</strong></td>
+<td>The problem is avoided but not truly fixed (e.g. booting an older kernel)</td>
+</tr>
+<tr>
+<td><strong>Known issue, no fix available</strong></td>
+<td>Matches a documented upstream bug; options are listed with trade-offs</td>
+</tr>
+<tr>
+<td><strong>Unresolved</strong></td>
+<td>Evidence gathered and attempts exhausted; next steps and what was ruled out are listed</td>
+</tr>
+</tbody>
+</table>
+<p>Every finding in the report carries a confidence label:</p>
+<ul>
+<li><strong>Confirmed:</strong> reproduced or verified by a test on this machine.</li>
+<li><strong>Likely:</strong> matches a documented report plus this machine's hardware IDs and kernel version.</li>
+<li><strong>Speculation:</strong> plausible but unverified.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-48</td>
+<td>Every Case ends with one of the four outcomes and an evidence report</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-49</td>
+<td>Findings are labeled Confirmed / Likely / Speculation; web or forum claims are never presented as Confirmed without a local test</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-50</td>
+<td>Before concluding &quot;known kernel regression&quot;, the agent proposes a <strong>one-time boot of the previous kernel</strong> (e.g. <code>grub-reboot</code> or the distro equivalent) and runs the success test; this does not change the default boot entry</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-51</td>
+<td>Evidence section cites sources (bug tracker, mailing list, distro tracker, forum thread), affected versions, and the machine's own <code>uname -r</code> and hardware IDs that match them</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-52</td>
+<td>Report lists what was ruled out and why, so the user does not repeat it</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>F-53</td>
+<td>For &quot;no fix&quot; outcomes, options are ranked with cost and reversibility, e.g. roll back kernel (Partial; keep the newer kernel installed), pin with <code>apt-mark hold</code> (Full), wait for a patched kernel</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-54</td>
+<td>Advice such as &quot;changing distro won't help&quot; is checked against the kernel version and patches the alternative would actually ship (e.g. LTS vs HWE kernels) before it is stated</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>F-55</td>
+<td>The agent stops and reports instead of continuing once all credible hypotheses are exhausted or the attempt limit is reached</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>F-56</td>
+<td>Optional <strong>watch mode</strong>: re-check when a new kernel or package version is available and report whether the issue is fixed upstream</td>
+<td>P2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Case flow (audio)</strong></p>
+<pre><code>You &gt; My sound shows Dummy Output after every boot. Fix it.
+
+Agent &gt; Starting Case #3. Success test: after reboot, `pactl list sinks short`
+        shows a real sink.
+
+✓ Diagnosed (read-only): sound card detected, but the driver loads late at boot
+
+Plan (ranked):
+  1. Add `options snd-hda-intel ...` in /etc/modprobe.d/   [Reversibility: Full]
+  2. Reinstall alsa-base / pulseaudio packages              [Partial]
+  3. Pin a kernel module load order via initramfs            [Partial]
+
+Try #1? [y]es [n]o [e]dit plan
+
+✓ Backed up /etc/modprobe.d/alsa-base.conf
+✓ Edited file (diff saved)
+… Reboot required. Run `hasshr resume` after restarting.
+</code></pre>
+<p><strong>Example Case flow (microphone, &quot;known issue&quot; outcome)</strong></p>
+<pre><code>You &gt; My microphone stopped working. Fix it.
+
+Agent &gt; Starting Case #4. Success test: `arecord` records audible input
+        from the built-in mic.
+
+✓ Diagnosed (read-only): mic detected, no audio captured, errors in dmesg
+✓ Tried 3 config fixes, one at a time; all rolled back, none worked
+
+Finding (Likely): matches a reported regression in kernel 6.x on your
+hardware (sources: bug tracker thread, distro forum).
+Test: boot the previous kernel once (default boot unchanged). Run test? [y/n]
+
+✓ Mic works on the previous kernel. Finding upgraded to Confirmed.
+
+Outcome: KNOWN ISSUE, NO FIX AVAILABLE
+Options:
+  1. Boot the previous kernel      [Reversibility: Partial; newer kernel stays installed]
+  2. Pin the kernel (apt-mark hold) [Full]
+  3. Wait for a patched kernel      [use `hasshr watch` to be notified]
+Note: switching distro would not help unless it ships a different kernel.
+</code></pre>
+<hr>
+<h2>7. Agent Architecture</h2>
+<pre><code>User prompt
+   │
+   ▼
+┌─────────┐   plan    ┌──────────────┐  approved steps  ┌──────────┐
+│ Planner │ ───────▶  │ Permission &amp; │ ───────────────▶ │ Executor │
+│  agent  │           │ Risk Engine  │                  │  agent   │
+└─────────┘           └──────────────┘                  └────┬─────┘
+     ▲                                                       │ results
+     │              ┌──────────┐   pass / fail + fixes       ▼
+     └───────────── │ Verifier │ ◀───────────────────────────┘
+        replan      │  agent   │
+                    └────┬─────┘
+                         ▼
+                 Summary + audit log + undo journal
+</code></pre>
+<ul>
+<li><strong>Planner:</strong> converts the request into ordered steps, picks tools, and explains each in plain language.</li>
+<li><strong>Risk Engine (non-LLM):</strong> classifies each step and enforces the active permission mode and hard blocks.</li>
+<li><strong>Executor:</strong> runs approved steps through tools and captures output and exit codes.</li>
+<li><strong>Verifier:</strong> checks the actual system state against the goal; triggers replanning on failure (max 3 retries).</li>
+</ul>
+<p><strong>Case mode:</strong> a Case reuses these agents with an added <strong>Diagnostician</strong> (read-only evidence gathering and hypothesis ranking) and a <strong>Journal Keeper</strong> (non-LLM component that records backups and snapshots, and executes rollbacks). The Planner may only propose; the Journal Keeper and Risk Engine decide what actually runs. The Verifier also reviews each Case conclusion: it checks that confidence labels match the evidence and that &quot;known issue&quot; claims were tested locally where possible.</p>
+<p><strong>Loop limits:</strong> max steps per task (default 25), max retries, and timeouts per command, to prevent runaway behavior.</p>
+<hr>
+<h2>8. User Experience</h2>
+<h3>8.1 Example session (<code>ask-sensitive</code>)</h3>
+<pre><code>Hasshr v0.1   mode: ask-sensitive   model: claude-sonnet
+
+You &gt; Find all PDF files in Downloads and put them into a folder called PDFs.
+
+Agent &gt; I&#39;ll inspect Downloads first.
+
+✓ Found 23 PDF files
+✓ Created ~/Downloads/PDFs
+✓ Moved 23 files
+✓ Verified all files
+
+Done. Type /undo to reverse this.
+</code></pre>
+<h3>8.2 Approval prompt (sensitive action)</h3>
+<pre><code>Agent &gt; I need to install the NVIDIA driver.
+
+  Command:  sudo apt install nvidia-driver-550
+  Effect:   Installs a graphics driver and may require a reboot.
+  Risk:     SENSITIVE   Undo: not available
+
+  Run this? [y]es  [n]o  [e]dit  [a]lways this session
+</code></pre>
+<h3>8.3 UX principles</h3>
+<ul>
+<li>Plain language first, raw commands second.</li>
+<li>Never hide what will run; always show the exact command on approval.</li>
+<li>Short output; details available via <code>/log</code>.</li>
+<li>Errors explain what went wrong and what to try next.</li>
+</ul>
+<hr>
+<h2>9. Technical Requirements</h2>
+<ul>
+<li><strong>Language:</strong> Python 3.10+</li>
+<li><strong>Distribution:</strong> PyPI package <code>hasshr</code> (verify name availability early), entry point <code>hasshr</code></li>
+<li><strong>Suggested libraries:</strong> <code>typer</code> or <code>click</code> (CLI), <code>rich</code> (output, prompts), <code>litellm</code> (providers), <code>pyperclip</code>, built-in <code>webbrowser</code>, <code>send2trash</code>, <code>shlex</code>, <code>platformdirs</code>, <code>keyring</code>, <code>pyyaml</code></li>
+<li><strong>Platforms:</strong> Linux and macOS first-class; Windows (PowerShell/CMD) supported via shell adapters</li>
+<li><strong>Storage:</strong> local config, audit log, and undo journal in the platform config directory</li>
+<li><strong>Privacy:</strong> no telemetry by default; only the prompt and necessary context go to the chosen model</li>
+</ul>
+<h3>9.1 Suggested project structure</h3>
+<pre><code>hasshr/
+├── cli.py              # entry points, interactive loop
+├── config.py           # modes, keys, preferences
+├── agents/             # planner.py, executor.py, verifier.py
+├── tools/              # files.py, shell.py, web.py, clipboard.py, system.py
+├── safety/             # classifier.py, rules.yaml, permissions.py, undo.py, audit.py
+├── llm/                # provider abstraction, prompts
+└── platform/           # os detection, shell adapters
+tests/
+</code></pre>
+<hr>
+<h2>10. Non-Functional Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Safety</td>
+<td>Zero unapproved Sensitive actions in non-<code>auto</code> modes (tested)</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>First response begins streaming in under 3 s on a standard connection</td>
+</tr>
+<tr>
+<td>Reliability</td>
+<td>Graceful handling of LLM/API failures and timeouts; no partial state without a log entry</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>Secrets never logged; hard blocks enforced outside the LLM</td>
+</tr>
+<tr>
+<td>Portability</td>
+<td>Same prompts work on Linux, macOS, and Windows for typed-tool tasks</td>
+</tr>
+<tr>
+<td>Usability</td>
+<td>New user completes first task within 60 seconds of install</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>11. Success Metrics</h2>
+<p><strong>Hackathon</strong></p>
+<ul>
+<li>Live demo of the Downloads-organize scenario in all three modes.</li>
+<li>Demo of a sensitive action (package install) showing approval, risk label, and audit log.</li>
+<li>Demo of <code>/undo</code>.</li>
+</ul>
+<p><strong>Product</strong></p>
+<ul>
+<li>Task success rate on a benchmark of 30 common tasks: ≥ 85%.</li>
+<li>Classifier: 100% of the hard-block test set refused; ≥ 95% of the Sensitive test set flagged.</li>
+<li>Time to first successful task for a new user: &lt; 1 minute.</li>
+</ul>
+<hr>
+<h2>12. Risks &amp; Mitigations</h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LLM generates a destructive command</td>
+<td>High</td>
+<td>Deterministic classifier, hard blocks, confirmation, Trash/backup</td>
+</tr>
+<tr>
+<td>Prompt injection via web or file content</td>
+<td>High</td>
+<td>Untrusted-data labeling, escalation rules, no auto-running copied commands</td>
+</tr>
+<tr>
+<td>Misclassification of complex shell</td>
+<td>Medium</td>
+<td>Unknown = Sensitive; pipeline-aware parsing; test suite</td>
+</tr>
+<tr>
+<td>User enables <code>auto</code> without understanding</td>
+<td>High</td>
+<td>Explicit acknowledgment, warning, hard blocks remain</td>
+</tr>
+<tr>
+<td>Irreversible system changes (GRUB, drivers)</td>
+<td>High</td>
+<td>Clear &quot;no undo&quot; labeling, dry-run options, audit log</td>
+</tr>
+<tr>
+<td>Cross-platform command differences</td>
+<td>Medium</td>
+<td>Environment detection, typed tools, per-OS prompts</td>
+</tr>
+<tr>
+<td>PyPI name conflict or crowded market</td>
+<td>Medium</td>
+<td>Check name now; differentiate on non-programmer UX and safety</td>
+</tr>
+<tr>
+<td>API cost / latency</td>
+<td>Low</td>
+<td>Provider choice, local models, step limits</td>
+</tr>
+<tr>
+<td>Trial and error leaves the system worse than before</td>
+<td>High</td>
+<td>One change at a time, rollback after each failure, clean-room confirmation, journal with verification</td>
+</tr>
+<tr>
+<td>&quot;Full undo&quot; promised but not possible (drivers, firmware, GRUB)</td>
+<td>High</td>
+<td>Reversibility label before every step, approval required for None-level steps, suggest snapshots</td>
+</tr>
+<tr>
+<td>Bad advice from forums or web results</td>
+<td>Medium</td>
+<td>Untrusted-input handling, source shown to the user, same risk classification as any command</td>
+</tr>
+<tr>
+<td>Agent declares &quot;known issue, no fix&quot; too early or wrongly</td>
+<td>High</td>
+<td>Confidence labels, one-time boot test of the previous kernel, cited sources, Verifier review of conclusions</td>
+</tr>
+<tr>
+<td>Kernel rollback or pinning breaks drivers (e.g. DKMS modules) or leaves the system without security updates</td>
+<td>Medium</td>
+<td>Keep the newer kernel installed, use reversible holds, warn about security implications, document how to undo</td>
+</tr>
+<tr>
+<td>Rollback itself fails or leaves partial state</td>
+<td>Medium</td>
+<td>Hash/snapshot verification after rollback, clear report of differences, manual recovery instructions</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>13. Roadmap</h2>
+<p><strong>Phase 1: Hackathon MVP (P0)</strong></p>
+<ul>
+<li>CLI one-shot + interactive mode</li>
+<li>Typed file tools + <code>run_shell</code></li>
+<li>Three permission modes + rule-based classifier + hard blocks</li>
+<li>Planner/Executor/Verifier loop</li>
+<li>Audit log, Trash-based undo for file operations</li>
+<li>One provider + environment detection</li>
+<li>Polished demo scenario (Downloads organizer)</li>
+</ul>
+<p><strong>Phase 2: Beta</strong></p>
+<ul>
+<li>Web search + browser opening, clipboard tool</li>
+<li>Multi-provider and local model support</li>
+<li>YAML-editable rules, <code>/log</code>, session memory</li>
+<li>Windows adapter polish, dry-run support</li>
+<li>PyPI release</li>
+<li>Troubleshooting Cases: diagnosis, hypothesis plan, one-at-a-time trials, change journal, rollback, <code>hasshr resume</code></li>
+<li>Case outcomes (Fixed / Workaround / Known issue / Unresolved) with confidence-labeled evidence reports and one-time previous-kernel testing</li>
+</ul>
+<p><strong>Phase 3: Later</strong></p>
+<ul>
+<li>Saved routines (&quot;every Friday, clean Downloads&quot;)</li>
+<li>Plugins/custom tools</li>
+<li>Safer sandboxing (containers, snapshots such as Btrfs/ZFS/Time Machine integration)</li>
+<li>Optional voice and GUI wrapper</li>
+<li>Watch mode: notify when an upstream fix lands in a newer kernel or package</li>
+</ul>
+<hr>
+<h2>14. Open Questions</h2>
+<ol>
+<li>Should <code>ask-sensitive</code> allow per-category overrides (e.g. always ask for packages, never ask for file moves)?</li>
+<li>How should multi-step plans be approved: all at once, or step by step?</li>
+<li>Which snapshot or backup mechanism, if any, to integrate for system-level undo?</li>
+<li>What is the policy for logging command output that may contain secrets?</li>
+<li>Is <code>--allow-dangerous</code> shipped at all in v0.1, or deferred?</li>
+<li>Final package name: confirm <code>hasshr</code> is available on PyPI, or pick an alternative.</li>
+<li>Should Cases integrate system snapshots (Btrfs/ZFS/Timeshift/Time Machine) as an extra safety net for None-level steps?</li>
+<li>How much of the journal should be shared with the LLM, to limit tokens and avoid leaking sensitive file contents?</li>
+<li>Which reproducible failure should the hackathon demo use? A scripted fault in a VM is more reliable than a real hardware issue.</li>
+<li>Which sources count as authoritative for &quot;known issue&quot; findings (kernel bugzilla, distro trackers, mailing lists), and how should conflicting reports be handled?</li>
+<li>How is a one-time boot of the previous kernel done safely across distros and bootloaders, and what if the machine cannot reboot unattended?</li>
+</ol>
+<hr>
+<h2>15. Appendix: Demo Script (3 minutes)</h2>
+<ol>
+<li><code>pip install hasshr</code>, then <code>hasshr</code>; choose <code>ask-sensitive</code>.</li>
+<li>Prompt: <em>&quot;Organize my Downloads into subfolders by file type.&quot;</em> Show the plan, execution, and verification.</li>
+<li>Run <code>/undo</code> and show files restored.</li>
+<li>Prompt: <em>&quot;Update my system packages.&quot;</em> Show the SENSITIVE approval prompt with exact command and effect.</li>
+<li>Switch to <code>ask-all</code>, repeat a small task, and show every step confirmed.</li>
+<li>Try a blocked command (e.g. disk wipe) and show the refusal even in <code>auto</code>.</li>
+<li>Show the audit log.</li>
+</ol>
+<h3>Demo B: Troubleshooting Case (2 minutes)</h3>
+<ol>
+<li>In a prepared Ubuntu VM, a service config has been deliberately broken.</li>
+<li>Prompt: <em>&quot;My network service fails to start after boot. Fix it.&quot;</em></li>
+<li>Show the success test, read-only diagnosis, and the ranked hypothesis plan.</li>
+<li>Show the first hypothesis failing and being rolled back automatically.</li>
+<li>Show the second hypothesis working, then the clean-room confirmation.</li>
+<li>Show the final report and the journal, then run <code>hasshr case undo</code> to restore the original state.</li>
+</ol>
+
+</body></html>

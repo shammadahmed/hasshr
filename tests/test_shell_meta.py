@@ -1,7 +1,7 @@
 import pytest
 
-from termiai.contracts import Reversibility as R
-from termiai.tools.shell_meta import analyse_command, is_read_only, uses_privilege_escalation
+from hasshr.contracts import Reversibility as R
+from hasshr.tools.shell_meta import analyse_command, is_read_only, uses_privilege_escalation
 
 READ_ONLY = [
     "ls -la ~/Downloads", "cat /etc/os-release", "df -h", "uname -r", "lspci -nnk", "lsusb", "dmesg",

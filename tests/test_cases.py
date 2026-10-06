@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from termiai.cases import (
+from hasshr.cases import (
     CaseEngine,
     CaseState,
     Confidence,
@@ -15,12 +15,12 @@ from termiai.cases import (
     undo_case,
     watch_case,
 )
-from termiai.cases.fixtures import (
+from hasshr.cases.fixtures import (
     broken_service_fixture,
     simulated_kernel_regression_fixture,
 )
-from termiai.contracts import Context, Outcome, Reversibility
-from termiai.tools.registry import ToolRegistry
+from hasshr.contracts import Context, Outcome, Reversibility
+from hasshr.tools.registry import ToolRegistry
 
 
 class DummyApprover:

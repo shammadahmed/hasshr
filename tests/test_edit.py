@@ -3,10 +3,10 @@ import stat
 import subprocess
 from pathlib import Path
 
-from termiai.contracts import Reversibility as R
-from termiai.tools import edit as edit_mod
-from termiai.tools.edit import EditFile, make_diff
-from termiai.tools.files import sha256_file
+from hasshr.contracts import Reversibility as R
+from hasshr.tools import edit as edit_mod
+from hasshr.tools.edit import EditFile, make_diff
+from hasshr.tools.files import sha256_file
 
 
 def write(home: Path, rel: str, content: str, mode: int | None = None) -> Path:
@@ -291,7 +291,7 @@ def test_needs_admin_detection(ctx, home, monkeypatch):
 
 # ---------------------------------------------------------------- diff correctness
 def test_diff_marks_missing_final_newline_instead_of_gluing_lines(ctx, home):
-    from termiai.tools.edit import diff_stats
+    from hasshr.tools.edit import diff_stats
 
     write(home, "c.txt", "c.txt")  # no trailing newline
     r = edit(ctx, path="c.txt", operation="replace", find="c.txt", content="d.txt")
@@ -302,7 +302,7 @@ def test_diff_marks_missing_final_newline_instead_of_gluing_lines(ctx, home):
 
 
 def test_append_to_unterminated_file_diff_shows_only_new_line(ctx, home):
-    from termiai.tools.edit import diff_stats
+    from hasshr.tools.edit import diff_stats
 
     write(home, "c.txt", "one")
     r = edit(ctx, path="c.txt", operation="append", content="two")
@@ -311,7 +311,7 @@ def test_append_to_unterminated_file_diff_shows_only_new_line(ctx, home):
 
 
 def test_diff_stats_ignores_headers_and_markers():
-    from termiai.tools.edit import diff_stats
+    from hasshr.tools.edit import diff_stats
 
     d = make_diff("a\nb", "a\nc\n", "f")
     assert diff_stats(d) == (1, 1)

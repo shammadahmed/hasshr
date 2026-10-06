@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from conftest import FakeApprover, make_pipeline
 
-from termiai.contracts import (
+from hasshr.contracts import (
     ApprovalChoice,
     ApprovalResponse,
     Mode,

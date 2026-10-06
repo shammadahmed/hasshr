@@ -3,12 +3,12 @@ import webbrowser
 
 import pytest
 
-from termiai.contracts import Reversibility as R
-from termiai.tools import clipboard as clip_mod
-from termiai.tools import web as web_mod
-from termiai.tools.base import ToolError
-from termiai.tools.clipboard import CopyToClipboard
-from termiai.tools.web import OpenUrl, SearchWeb, _DDGParser, clean_text, validate_url
+from hasshr.contracts import Reversibility as R
+from hasshr.tools import clipboard as clip_mod
+from hasshr.tools import web as web_mod
+from hasshr.tools.base import ToolError
+from hasshr.tools.clipboard import CopyToClipboard
+from hasshr.tools.web import OpenUrl, SearchWeb, _DDGParser, clean_text, validate_url
 
 DDG_HTML = """
 <div class="result"><h2><a class="result__a" href="//duckduckgo.com/l/?uddg=https%3A%2F%2Faskubuntu.com%2Fq%2F1&rut=abc">Fix <b>Dummy Output</b> in Ubuntu</a></h2>

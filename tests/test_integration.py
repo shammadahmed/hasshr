@@ -9,9 +9,9 @@ rules the Implementation Plan cares most about for M3:
 
 import pytest
 
-from termiai.contracts import Reversibility as R
-from termiai.tools import default_registry
-from termiai.tools.undo_ops import undo_operation
+from hasshr.contracts import Reversibility as R
+from hasshr.tools import default_registry
+from hasshr.tools.undo_ops import undo_operation
 
 
 def execute(reg, ctx, name, args):

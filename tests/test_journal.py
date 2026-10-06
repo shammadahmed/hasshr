@@ -3,24 +3,24 @@ from pathlib import Path
 
 import pytest
 
-from termiai.contracts import Context, Reversibility, RiskLevel, RiskResult, ToolCall, ToolResult
-from termiai.journal import (
+from hasshr.contracts import Context, Reversibility, RiskLevel, RiskResult, ToolCall, ToolResult
+from hasshr.journal import (
     ActionJournal as Journal,
 )
-from termiai.journal import (
+from hasshr.journal import (
     CaseJournal,
     SnapshotManager,
     UndoManager,
     Verifier,
 )
-from termiai.journal import (
+from hasshr.journal import (
     Journal as StoreJournal,
 )
 
 
 def test_snapshot_delete_and_undo():
     with tempfile.TemporaryDirectory() as d:
-        base, target = Path(d) / ".termiai", Path(d) / "demo.txt"
+        base, target = Path(d) / ".hasshr", Path(d) / "demo.txt"
         target.write_text("original", encoding="utf-8")
         j, s, v = Journal(base), SnapshotManager(base), Verifier()
         a = j.start_action("Delete demo.txt", "DELETE", str(target), reversibility="Full")
@@ -41,7 +41,7 @@ def test_snapshot_delete_and_undo():
 
 def test_restore_conflict_requires_explicit_overwrite():
     with tempfile.TemporaryDirectory() as d:
-        base, target = Path(d) / ".termiai", Path(d) / "x.txt"
+        base, target = Path(d) / ".hasshr", Path(d) / "x.txt"
         target.write_text("old", encoding="utf-8")
         m = SnapshotManager(base).snapshot_file(target)
         target.write_text("new", encoding="utf-8")
@@ -53,7 +53,7 @@ def test_restore_conflict_requires_explicit_overwrite():
 
 def test_secret_redaction_and_corrupt_tail_tolerance():
     with tempfile.TemporaryDirectory() as d:
-        base = Path(d) / ".termiai"
+        base = Path(d) / ".hasshr"
         j = Journal(base)
         a = j.start_action("use api_key=SUPERSECRET", "RUN", "x")
         j.update(a, output="password=hunter2")
@@ -66,7 +66,7 @@ def test_secret_redaction_and_corrupt_tail_tolerance():
 
 def test_case_attempt_persistence():
     with tempfile.TemporaryDirectory() as d:
-        data = CaseJournal(Path(d) / ".termiai").record_attempt(
+        data = CaseJournal(Path(d) / ".hasshr").record_attempt(
             "CASE-0001",
             "Service down",
             1,

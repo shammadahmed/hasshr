@@ -1,9 +1,9 @@
 import json
 from pathlib import Path
 
-from termiai.contracts import Action, Context, Mode, Reversibility
-from termiai.safety.classifier import classify
-from termiai.safety.permissions import decide
+from hasshr.contracts import Action, Context, Mode, Reversibility
+from hasshr.safety.classifier import classify
+from hasshr.safety.permissions import decide
 
 CORPUS_PATH = Path(__file__).parent / "command_corpus.json"
 

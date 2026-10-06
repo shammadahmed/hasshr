@@ -4,12 +4,12 @@ Fill in the names at kickoff. Every PR needs a review from the paired member.
 
 | Module | Path | Owner | Name | Reviewer pair |
 |---|---|---|---|---|
-| Core agent, pipeline, contracts | `termiai/agent.py`, `pipeline.py`, `agents/`, `contracts.py`, `prompts.py` | M1 (admin) | Hammad | M6 |
-| Safety engine | `termiai/safety/` | M2 | | M3 |
-| Tools & platform | `termiai/tools/`, `termiai/env.py` | M3 | | M2 |
-| Journal, undo & audit | `termiai/journal/` | M4 | | M5 |
-| Troubleshooting Cases | `termiai/cases/` (new) | M5 | | M4 |
-| CLI/UX, LLM layer, packaging | `termiai/cli.py`, `termiai/llm/`, `pyproject.toml` | M6 | | M1 |
+| Core agent, pipeline, contracts | `hasshr/agent.py`, `pipeline.py`, `agents/`, `contracts.py`, `prompts.py` | M1 (admin) | Hammad | M6 |
+| Safety engine | `hasshr/safety/` | M2 | | M3 |
+| Tools & platform | `hasshr/tools/`, `hasshr/env.py` | M3 | | M2 |
+| Journal, undo & audit | `hasshr/journal/` | M4 | | M5 |
+| Troubleshooting Cases | `hasshr/cases/` (new) | M5 | | M4 |
+| CLI/UX, LLM layer, packaging | `hasshr/cli.py`, `hasshr/llm/`, `pyproject.toml` | M6 | | M1 |
 
 ## Stubs that must be replaced (keep the signatures)
 
